@@ -84,5 +84,65 @@ namespace BarCodePrintSys.Controllers
             string data = DBHelper.DatasetToJson(ds);
             return data;
         }
+        public string AddPrint()
+        {
+            var code = 0;
+            string lsnum = "";
+            string lsary = "";
+            string sql;
+            int id = 1;
+            string cnbqywm = Func.Zhuru(Request["cnbqywm"]);
+            string packtype = Func.Zhuru(Request["packtype"]);
+            string chrq = Func.Zhuru(Request["chrq"]);
+            string scrq = Func.Zhuru(Request["scrq"]);
+            string gysdm = Func.Zhuru(Request["gysdm"]);
+            string sl = Func.Zhuru(Request["sl"]);
+            string scph = Func.Zhuru(Request["scph"]);
+            string FIFO = Func.Zhuru(Request["FIFO"]);
+            string Item = Func.Zhuru(Request["Item"]);
+            string Lot = Func.Zhuru(Request["Lot"]);
+            string Item2 = Func.Zhuru(Request["Item2"]);
+            string Item3 = Func.Zhuru(Request["Item3"]);
+            string Item5 = Func.Zhuru(Request["Item5"]);
+            string lsh = Getlsnum(chrq);
+            string lotmsg = Lot + lsh;
+            string ylbd = Func.Zhuru(Request["ylbd"]);
+            int num_print = int.Parse(Func.Zhuru(Request["num_print"]));
+            string creatorid = Server.UrlDecode(Request.Cookies["bcp_userInfo"]["UserID"].ToString());
+            string nowtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            string groupid = DBHelper.getuserGroup(creatorid);
+            string roleid = Server.HtmlDecode(Request.Cookies["bcp_userInfo"]["RoleID"].ToString());
+            //下面的SQL是不完整的只是单纯检查下SQL注入。
+            sql = "Insert Into tbDafangPrint(s_id,s_cnbqywm,s_packageType,s_chrq,s_scrq,s_sl,s_lsh,s_gysdm,s_scph,s_Item2,s_Item5,s_Item3,s_FIFOmsg,s_Itemmsg,s_Lotmsg,s_creator,s_createtime,s_Groupid,s_Roleid,s_waternum,n_state,n_bdprint) ";
+            sql += "values(NEWID(),'" + cnbqywm + "','" + packtype + "','" + chrq + "','" + scrq + "','" + sl + "','" + lsh + "','" + gysdm + "','" + scph + "','" + Item2 + "','" + Item5 + "','" + Item3 + "','" + FIFO + "','" + Item + "','" + lotmsg + "'";
+            sql += ",'" + creatorid + "','" + nowtime + "','" + groupid + "','" + roleid + "','" + id + "'+'/" + num_print + "',0,'" + ylbd + "') ";
+            var warndata = sql.IndexOf("warning");
+            if (warndata != -1)
+            {
+                code = -1;
+                string data = code + "," + lsnum;
+                return data;
+            }
+            else
+            {
+                while (id <= num_print)
+                {
+                    lsh = Getlsnum(chrq);
+                    lotmsg = Lot + lsh;
+                    sql = "Insert Into tbDafangPrint(s_id,s_cnbqywm,s_packageType,s_chrq,s_scrq,s_sl,s_lsh,s_gysdm,s_scph,s_Item2,s_Item5,s_Item3,s_FIFOmsg,s_Itemmsg,s_Lotmsg,s_creator,s_createtime,s_Groupid,s_Roleid,s_waternum,n_state,n_bdprint) ";
+                    sql += "values(NEWID(),'" + cnbqywm + "','" + packtype + "','" + chrq + "','" + scrq + "','" + sl + "','" + lsh + "','" + gysdm + "','" + scph + "','" + Item2 + "','" + Item5 + "','" + Item3 + "','" + FIFO + "','" + Item + "','" + lotmsg + "'";
+                    sql += ",'" + creatorid + "','" + nowtime + "','" + groupid + "','" + roleid + "','" + id + "'+'/" + num_print + "',0,'" + ylbd + "') ";
+                    lsary = lsary + "," + lsh;
+                    code = DBHelper.excuteNoQuery(sql);
+                    if (code == -1)
+                    {
+                        code = 0;
+                    }
+                    id += 1;
+                }
+                string data = code + "," + lsary;
+                return data;
+            }
+        }
     }
 }

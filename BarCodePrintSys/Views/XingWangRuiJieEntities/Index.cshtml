@@ -46,41 +46,41 @@
         <div id="textarea" style="width: 400px; height: 360px; margin-top: 20px; line-height: 25px; margin-left: 50px; text-align: right; display: inline-block;">
             <div style="width: 400px;" class="font">
                 客户料号:
-                <input id="khlh" type="text" onblur="Check();" />
+                <input id="khlh" type="text" />
             </div>
             <div class="font" style="width: 400px;">
                 采购渠道:
-                <select id="tagType" style="width: 203px;" disabled>
+                <select id="tagType" style="width: 203px;">
                     <option value="0">星网锐捷/升腾资讯</option>
                     <option value="1">锐捷网络</option>
                 </select>
             </div>
             <div style="width: 400px;" class="font">
                 厂商代码:
-                <input id="csdm" type="text" onblur="Check();" />
+                <input id="csdm" type="text" />
             </div>
             <div style="width: 400px;" class="font">
                 内控追踪码:
-                <input id="nkzz" type="text" onblur="Check();" />
+                <input id="nkzz" type="text" />
             </div>
             <div style="width: 400px;" class="font">
                 物料版本号:
-                <input id="wlbbh" type="text" onblur="Check();" />
+                <input id="wlbbh" type="text" />
             </div>
             <div style="width: 400px;" class="font">
                 数量:
-                <input id="amount" type="text" onblur="Check();" />
+                <input id="amount" type="text" />
             </div>
-@*            <div style="width: 400px;" class="font">
-                Item:
-                <input id="Item1" type="text" value="" style="width:110px;" placeholder="11位客户料号" />
-                <input id="Item2" type="text" value="0394" style="width:40px;"
-                       readonly />
-                <input id="Item3" type="text" style="width:10px;" maxlength="1" minlength="1" placeholder="1位采购渠道" />
-                <input id="Item4" type="text" value="" style="width:60px;" maxlength="6" minlength="6" placeholder="6位内控追踪码" onblur="tongbu(2)" />
-                <input id="Item5" type="text" value="1" style="width:10px;" placeholder="物料版本号" readonly />
-                <input id="Item6" type="text" value="" style="width:40px;" maxlength="4" minlength="4" placeholder="4位数量" />
-            </div>*@
+            @*            <div style="width: 400px;" class="font">
+                    Item:
+                    <input id="Item1" type="text" value="" style="width:110px;" placeholder="11位客户料号" />
+                    <input id="Item2" type="text" value="0394" style="width:40px;"
+                           readonly />
+                    <input id="Item3" type="text" style="width:10px;" maxlength="1" minlength="1" placeholder="1位采购渠道" />
+                    <input id="Item4" type="text" value="" style="width:60px;" maxlength="6" minlength="6" placeholder="6位内控追踪码" onblur="tongbu(2)" />
+                    <input id="Item5" type="text" value="1" style="width:10px;" placeholder="物料版本号" readonly />
+                    <input id="Item6" type="text" value="" style="width:40px;" maxlength="4" minlength="4" placeholder="4位数量" />
+                </div>*@
             <div style="width: 400px;" class="font">
                 打印张数:
                 <input type="number" id="numcount" oninput="if(value > 999 || value < 1 ){alert('打印张数范围在1到999之间！');value = ''}" />
@@ -216,7 +216,7 @@
                         , { field: 's_Id', title: '唯一标识', width: 110, hide: true }
                         , { field: 's_khlh', title: '客户料号', width: 160 }
                         , { field: 's_csdm', title: '厂商代码', width: 200 }
-                        , { field: 's-cgqd', title: '采购渠道', width: 90, templet: function (res) { if (res.s == 's-cgqd') return '锐捷网络'; }, hide: true}
+                        , { field: 's-cgqd', title: '采购渠道', width: 90, templet: function (res) { if (res.s == 's-cgqd') return '锐捷网络'; }, hide: true }
                         , { field: 's_nkzz', title: '内控追踪码', width: 200 }
                         , { field: 's_wlbbh', title: '物料版本号', width: 120 }
                         , { field: 's_amount', title: '数量', width: 150 }
@@ -278,14 +278,14 @@
                 };
             });
 
-            //内箱最小包装打印事件
+            //一维码打印事件
             $("#Printing").click(function () {
-                var str = document.getElementsByName('ylbd');//遗漏补打 
+                var str = document.getElementsByName('ylbd');//遗漏补打
                 var ylbd = 0;
                 if (str[0].checked == true) {
                     ylbd = str[0].value;
                 }
-                var tagType = $("#packageType").val();
+                var tagType = $("#tagType").val();
                 //选择内箱最小包装打印，只支持一次性打完内箱标签自动带一张外箱标签
                 var x = document.getElementById("textarea").getElementsByTagName("input");
                 //填写信息是否完整
@@ -299,45 +299,35 @@
                 var khlh = document.getElementById("khlh").value;//客户料号
                 var tagType = document.getElementById("tagType").value;//包装类型
                 var csdm = document.getElementById("csdm").value;//厂商代码
-                var cgqd = document.getElementById("cgqd").value;//采购渠道
+                var cgqd = document.getElementById("tagType").value;//采购渠道
                 var nkzz = document.getElementById("nkzz").value;//内控追踪
                 var amount = document.getElementById("amount").value;//数量
                 var wlbbh = document.getElementById("wlbbh").value;//物料版本号
                 var num_print = document.getElementById("numcount").value;//打印张数
-                if (tagType==0) {
-                    var FIFO = document.getElementById("khlh").value + document.getElementById("csdm").value + document.getElementById("cgqd").value + document.getElementById("nkzz").value +
+                if (tagType == 0) {
+                    var YWM = document.getElementById("khlh").value + document.getElementById("csdm").value + document.getElementById("tagType").value + document.getElementById("nkzz").value +
                         document.getElementById("wlbbh").value + document.getElementById("amount").value;
                 }
                 else {
-                    var FIFO = document.getElementById("khlh").value + document.getElementById("csdm").value + document.getElementById("cgqd").value + document.getElementById("nkzz").value +
+                    var YWM = document.getElementById("khlh").value + document.getElementById("csdm").value + document.getElementById("tagType").value + document.getElementById("nkzz").value +
                         document.getElementById("amount").value;
                 }
-                if (Item2.length != 2 || Item3.length != 3 || Item5.length != 5) {
-                    alert("Item处信息未填写完整，完整组成为2码5码.3码6位出货日期6码数量！");
-                    return false;
-                }
+
+                //数据检查TODO
                 if (!confirm("您确定要打印吗?")) return;
-                showmsg();
+                //showmsg();
                 //添加外箱打印数据数据
                 $.ajax({
                     type: "POST",
-                    url: "/Dafang/AddDafangPrint",
+                    url: "/XingWangRuiJieEntities/AddPrint",
                     data: {
-@*                        cnbqywm: cnbqywm,
-                        packageType: packageType,
-                        chrq: chrq,
-                        scrq: scrq,
-                        gysdm: gysdm,
-                        sl: sl,
-                        scph: scph,
-                        FIFO: FIFO,
-                        Item: Item,
-                        Lot: Lot,
-                        Item2: Item2,
-                        Item3: Item3,
-                        Item5: Item5,
-                        num_print: num_print,
-                        ylbd: ylbd,*@
+                        s_khlh: khlh,
+                        s_csdm: csdm,
+                        s_cgqd: cgqd,
+                        s_nkzz: nkzz,
+                        s_wlbbh: wlbbh,
+                        s_amount: amount,
+                        s_id: YWM,
                     },
                     dataType: "text",
                     success: function (data) {
@@ -417,7 +407,7 @@
 
                 document.getElementById("numcount").value = 1;//打印张数
 
-                showmsg();
+                //showmsg();
                 layer.confirm('确定要补打第' + obj.data[0].n_id + '条记录吗?', { icon: 7, title: '提示' }, function (index) {
 
 
