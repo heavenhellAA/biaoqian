@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head id="Head1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>欢迎你，用户登陆</title>
+    <link href="../../Content/login1.css" type="text/css" rel="stylesheet" />
+   @* <script src="../../Scripts/logo.js" type="text/javascript"></script>*@
+    <script src="../../Scripts/jquery-2.1.1.min.js" type="text/javascript"></script>
+</head>
+<body>
+    <div class="admin-logo"></div>
+    <div class="login-panel">
+        <div class="login-logo"><img src="../../Images/img/admin_logo.png" alt="载入图片失败" /></div>
+         <div class="login-form">
+            <p><span style="text-align:right">用户名：</span><input type="text" class="login-text text-user" id="admin" placeholder="请输入用户名"></p>
+            <p><span style="padding-left:14px;">密码：</span><input type="password" class="login-text text-password" id="password" placeholder="请输入密码"></p>
+            <p><div style="padding-left:54px;float:left"><input type="button" class="login-btn" id="btn" value="登录" onclick="loging()"></div></p>
+        </div>
+        </div>
+    <div class="login-footer">
+        <p>Copyright &copy; ; <a href="http://blog.csdn.net/ld_1090815922" target="_blank">刘定</a></p>
+    </div>
+    <script src="../../Scripts/showTip.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        document.onkeydown = function (event) {
+            if (event.keyCode == 13)  //回车键的键值为13
+                loging();
+        }
+        function loging() {
+                var Dname = $("#admin").val();
+                var Dpwd = $("#password").val();
+                if (Dname.length < 4) {
+                    ShowWarn("用户名错误！");
+                }
+                if (Dpwd.length < 4) {
+                    ShowWarn("密码错误！");
+                }
+                else {
+                    $.ajax({
+                        url: "../Default/Loging",
+                        type: "POST",
+                        data: { loginUsername: Dname, loginPassword: Dpwd },
+                        success: function (data) {
+                            if (data == 0) {
+                                ShowSuccess("用户名不存在，请检查后重新登录！");
+                            }
+                            else if (data == 1) {
+                                ShowSuccess("用户名或密码错误，请重新登录!");
+                            }
+                            else {
+                                location.href = "../Home/Index";
+                            }
+                        }
+                    });
+                }
+        }
+    </script>
+</body>
+</html>

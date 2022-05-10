@@ -1,0 +1,163 @@
+﻿html {
+    background: url("../Images/img/bg_login_body.gif");
+    font: 12px/1.6em Verdana, Geneva, sans-serif;
+    height: 100%;
+    font-size-adjust: none;
+    font-stretch: normal;
+    overflow: hidden;
+    font-family: 微软雅黑,宋体;
+}
+
+body {
+    background: url("../Images/img/bg_login_body.gif");
+    font: 12px/1.6em Verdana, Geneva, sans-serif;
+    height: 100%;
+    font-size-adjust: none;
+    font-stretch: normal;
+}
+
+.login-container {
+    margin: 0px auto;
+    width: 100%;
+    height: 100%;
+}
+
+.login-panel {
+    padding: 10% 0px 150px;
+}
+
+.login-logo {
+    width: 54%;
+    text-align: right;
+    float: left;
+}
+
+.login-form {
+    width: 44%;
+    text-align: left;
+    float: right;
+}
+.login-form li {
+        padding: 5px 0px;
+        clear: both;
+}
+
+.login-text {
+    padding: 9px 5px 9px 25px;
+    border-radius: 3px;
+    border: 1px solid rgb(170, 170, 170) !important;
+    border-image: none !important;
+    width: 180px;
+    height: 26px;
+    line-height: 26px;
+    font-weight: bold;
+    box-shadow: inset 2px 2px 2px #eee;
+}
+
+.text-user {
+    background: url("../Images/icon/icon_user.gif") no-repeat 5px 13px rgb(255, 255, 255);
+    width: 180px;
+    height: 24px;
+    line-height: 24px;
+}
+
+.text-password {
+    background: url("../Images/icon/icon_lock.gif") no-repeat 5px 10px rgb(255, 255, 255);
+    width: 180px;
+    height: 24px;
+    line-height: 24px;
+}
+
+.text-verify {
+    background: url("../Images/icon/icon_warning.png") no-repeat 7px 5px rgb(255, 255, 255);
+    padding: 8px 5px 8px 25px;
+    border-radius: 3px;
+    border: 1px solid rgb(102, 102, 153);
+    border-image: none;
+    width: 180px;
+    height: 28px;
+    line-height: 24px;
+    margin-right: 5px;
+    box-shadow: inset 2px 2px 2px #eee;
+}
+
+.verifycode {
+    float: left;
+    display: block;
+}
+
+.verifycode img {
+    height: 28px;
+}
+
+.login-btn {
+    border: 0px currentColor;
+    border-image: none;
+    padding-left: 30px;
+    width: 180px;
+    height: 26px;
+    font-size: 16px;
+    text-align: center;
+    padding-left: 12px;
+    letter-spacing: 10px;
+    color: rgb(255, 255, 255);
+    line-height: 26px;
+    font-weight: bold;
+    margin-top: 2px;
+    cursor: pointer;
+    -moz-border-radius: 10px; /* Gecko browsers */
+    -webkit-border-radius: 10px; /* Webkit browsers */
+    border-radius: 10px; /* W3C syntax */
+    background-color: orange;
+    box-shadow: 1px 1px 1px 1px inset #ff6a00;
+}
+.reg-btn {
+    border: 0px currentColor;
+    border-image: none;
+    width: 66px;
+    height: 26px;
+    font-size: 16px;
+    text-align: center;
+    padding-left:12px;
+    letter-spacing: 10px;
+    color: rgb(255, 255, 255);
+    line-height: 26px;
+    font-weight: bold;
+    margin-top: 2px;
+    cursor: pointer;
+    -moz-border-radius: 10px; /* Gecko browsers */
+    -webkit-border-radius: 10px; /* Webkit browsers */
+    border-radius: 10px; /* W3C syntax */
+    background-color: orange;
+    box-shadow: 1px 1px 1px 1px inset #ff6a00;
+}
+.login-footer {
+    left: 50%;
+    text-align: center;
+    bottom: 30px;
+    color: rgb(153, 153, 153);
+    margin-left: -60px;
+    position: fixed;
+}
+ul {
+    margin: 0;
+    padding: 0;
+    float: left;
+}
+li {
+    list-style-type: none;
+}
+.login-footer a {
+    color: rgb(102, 102, 102);
+    text-decoration: none;
+}
+.joining a {
+    font-size: 12px;
+    line-height: 12px;
+    padding-top: 10px;
+}
+.goReg {
+    padding-left:15px;
+    margin-left:15px;
+    padding-top:10px;
+}

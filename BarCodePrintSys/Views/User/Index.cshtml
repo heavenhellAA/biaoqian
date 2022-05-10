@@ -1,0 +1,333 @@
+﻿    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+    <link href="../../Scripts_UI/layui/css/layui.css" rel="stylesheet" />
+    <link href="../../Content/layui-extend.css" rel="stylesheet" />
+   <script src="../../Scripts/jquery-2.1.1.min.js"></script>
+</head>
+<body>
+<table class="layui-hide" id="tb_User" lay-filter="tb_User"></table>
+<div id="add-main" style="display: none;">
+     <div class="my-form">
+        <form class="layui-form" action="##" method="POST" lay-skin="line" id="AForm">
+            <div class="layui-form-item my-form-item">
+                <label class="layui-form-label">用户名：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="UserName" id="UserName" lay-verify="required" placeholder="请输入用户名"
+                           class="layui-input" lay-filter="Name">
+                </div>
+            </div>
+            <div class="layui-form-item my-form-item">
+                <label class="layui-form-label">姓名：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="Name" id="Name" lay-verify="required" placeholder="请输入姓名"
+                           class="layui-input" lay-filter="Name">
+                </div>
+            </div>
+            <div class="layui-form-item my-form-item">
+                <label class="layui-form-label">密码：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="Password" id="Password" lay-verify="required" placeholder="请输入密码"
+                           class="layui-input" lay-filter="Password">
+                </div>
+            </div>
+            <div class="layui-form-item my-form-item">
+            <label class="layui-form-label">权限级别：</label>
+            <div class="layui-input-block">
+                <select id="selectRole" name="sRole" lay-filter="sRole" >
+                </select>
+            </div>
+            </div>
+            <div class="layui-form-item my-form-item"  style="display: @ViewData["none"]">
+            <label class="layui-form-label">所属分组：</label>
+            <div class="layui-input-block">
+                <select id="selectGroup" name="sGroup" lay-filter="sGroup" ">
+                </select>
+            </div>
+            </div>
+            <div class="layui-form-item my-form-item">
+                <div class="layui-input-block item">
+                   <button class="layui-btn" lay-submit lay-filter="submitA" id="submitA" type="submit">保存</button>
+                   <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="edit-main" style="display: none;">
+    <div class="my-form">
+        <form class="layui-form" action="##" method="POST" lay-skin="line" id="EForm"  lay-filter="EForm">
+            <div class="layui-form-item my-form-item">
+                <label class="layui-form-label">用户名：</label>
+                <div class="layui-input-inline">
+                     <input type="text" id="tUserIDE" name="tUserIDE" lay-filter="tUserIDE" style="display: none;">
+                    <input type="text" name="UserNameE" id="UserNameE"  value="" lay-verify="required" placeholder="请输入用户名" 
+                           class="layui-input" lay-filter="NameE">
+                </div>
+            </div>
+            <div class="layui-form-item my-form-item">
+                <label class="layui-form-label">姓名：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="NameE" id="NameE" lay-verify="required" placeholder="请输入姓名"
+                           class="layui-input" lay-filter="Name">
+                </div>
+            </div>
+            <div class="layui-form-item my-form-item">
+                <label class="layui-form-label">密码：</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="PasswordE" id  ="PasswordE"  value=""  lay-verify="required" placeholder="请输入密码"
+                           class="layui-input" lay-filter="PasswordE">
+                </div>
+            </div>
+            <div class="layui-form-item my-form-item">
+            <label class="layui-form-label">权限级别：</label>
+            <div class="layui-input-block">
+                <select id="selectRoleE" name="sRoleE" lay-filter="sRoleE">
+                </select>
+            </div>
+            </div>
+            <div class="layui-form-item my-form-item" style="display:@ViewData["none"]">
+            <label class="layui-form-label">所属分组：</label>
+            <div class="layui-input-block">
+                <select id="selectGroupE" name="sGroupE" lay-filter="sGroupE">
+                </select>
+            </div>
+            </div>
+            <div class="layui-form-item my-form-item">
+                <div class="layui-input-block item">
+                   <button class="layui-btn" lay-submit lay-filter="submitE" id="submitE" type="submit">保存</button>
+                   <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/html" id="toolbarUser">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm layui-icon" lay-event="add">&#xe654;新增</button>
+        <button class="layui-btn layui-btn-sm layui-icon" lay-event="edit">&#xe642;编辑</button>
+        <button class="layui-btn layui-btn-sm layui-icon" lay-event="del">&#xe640;删除</button>
+        <div class="layui-btn layui-btn-sm">
+            用户名：<input type="text" name="search" id="search">
+        </div>
+        <button class="layui-btn layui-btn-sm layui-icon" lay-event="search">&#xe615;查询</button>
+        <button class="layui-btn layui-btn-sm layui-icon" lay-event="flush">&#xe669;刷新</button>
+    </div>
+</script>
+<script src="../../Scripts_UI/layui/layui.all.js"></script>
+<script>
+    @{//权限级别
+        var Rdata = "[";
+        foreach (BarCodePrintSys.TRole role in ViewBag.role)
+        {
+            Rdata += "{RoleName:'" + role.RoleName + "',RoleNO:" + role.RoleNO + "},\n";
+        }
+        Rdata += "]";
+        }
+    var Rdata = @Html.Raw(Rdata)
+       $.each(Rdata, function (index, item) {
+           //console.log(item);
+           //option  第一个参数是页面显示的值，第二个参数是传递到后台的值
+           $('#selectRole').append(new Option(item.RoleName, item.RoleNO));//往下拉菜单里添加元素
+           $('#selectRoleE').append(new Option(item.RoleName, item.RoleNO));//往下拉菜单里添加元素
+       })
+      @{//所属分组
+          var Gdata = "[";
+          foreach (BarCodePrintSys.TGroup group in ViewBag.group)
+          {
+              Gdata += "{GroupName:'" + group.GroupName + "',GroupID:'" + group.GroupID + "'},\n";
+          }
+          Gdata += "]";
+        }
+    var Gdata = @Html.Raw(Gdata)
+       $.each(Gdata, function (index, item) {
+           //console.log(item);
+           //option  第一个参数是页面显示的值，第二个参数是传递到后台的值
+           $('#selectGroup').append(new Option(item.GroupName, item.GroupID));//往下拉菜单里添加元素
+           $('#selectGroupE').append(new Option(item.GroupName, item.GroupID));//往下拉菜单里添加元素
+       })
+</script>
+<script>
+    layui.use(['table', 'layer'], function () {
+        var table = layui.table;
+        var layer = layui.layer;
+        var form = layui.form;
+        var $ = layui.$;
+        var renderTable = function () {
+            table.render({
+            url: "../User/GetUser"   //换成自己的url
+            , id: "tb_User"//此处可以看文档
+            , method: "GET"
+            , height: layui.jquery(window).height()
+            , where: { mName: "" }
+            , elem: '#tb_User'
+            , toolbar: '#toolbarUser'
+            , title: '用户数据表'
+            , cols: [
+                [
+                      { type: 'checkbox', fixed: 'left' }
+                    , { type: 'numbers', title: '编号' }
+                    , { field: 'UserID', title: '用户ID', hide: true }
+                    , { field: 'UserName', title: '用户名' }
+                    , { field: 'Name', title: '姓名' }
+                    , { field: 'UserPassword', title: '密码' }
+                    , { field: 'GroupName', title: '分组名称' }
+                    , { field: 'GroupID', title: '分组ID', hide: true }
+                    , { field: 'RoleName', title: '权限名称' }
+                    , { field: 'RoleNO', title: '权限级别' }
+                ]
+            ]
+            , limit:10
+            , even: true
+            , page: true
+            });
+        }
+        renderTable();
+        //头工具栏事件
+        table.on('toolbar(tb_User)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+           // console.log(checkStatus);
+            switch (obj.event) {
+                case 'add':
+                    layer.open({
+                        title: '新增用户',
+                        /*如果是外部的html，type2，内部，type1*/
+                        type: 1,
+                        btnAlign: 'c',
+                        area: ['360px', '360px'],
+                        content: $("#add-main").html()
+                        //未做的是去监听表单提交，给后台发送ajax请求
+                    })
+                    form.render();
+                    break;
+                case 'edit':
+                    if (checkStatus.data.length > 0) {
+                        layer.open({
+                            title: '编辑用户',
+                            /*如果是外部的html，type2，内部，type1*/
+                            type: 1,
+                            btnAlign: 'c',
+                            area: ['360px', '360px'],
+                            content: $("#edit-main").html()
+                            //未做的是去监听表单提交，给后台发送ajax请求
+                        })
+                        //console.log(checkStatus.data[0].RoleNO);
+                        form.render();
+                        form.val("EForm", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
+                            "sRoleE": checkStatus.data[0].RoleNO// "name": "value"s
+                            , "tUserIDE": checkStatus.data[0].UserID
+                            , "UserNameE": checkStatus.data[0].UserName
+                            , "NameE": checkStatus.data[0].Name
+                            , "PasswordE": checkStatus.data[0].UserPassword
+                            , "sGroupE": checkStatus.data[0].GroupID
+                        });
+                    }
+                    else {
+                        layer.msg('请选择需要修改的用户！', { icon: 0 });
+                    }
+                    break;
+                case 'del':
+                    /*发送ajax请求到后台执行批量删除*/
+                    if (checkStatus.data.length > 0) {
+                        Del(checkStatus);
+                    } else {
+                        layer.msg('请选择需要删除的用户！', { icon: 0 });
+                    }
+                    break;
+                case 'search':
+                    table.reload('tb_User', {
+                        where: { //设定异步数据接口的额外参数
+                            mName: $("#search").val()
+                        }
+                      , page: {
+                          curr: 1 //重新从第 1 页开始
+                      }
+                    })
+                    form.render('select');//select是固定写法 不是选择器
+                    break;
+                case 'flush':
+                    renderTable();
+                    break;
+            };
+        });
+        //新增用户
+        form.on('submit(submitA)', function (data) {
+            var data = data.field;
+            layui.jquery.ajax({
+                type: "POST",
+                url: '../User/AddData',
+                data: data,
+                dataType: "JSON",
+                success: function (res) {
+                    if (res == '1') {
+                        layer.msg("添加成功", { icon: 6, time: 1000 }, function () {
+                            layer.closeAll();
+                            renderTable();
+                        });
+                    }
+                    else {
+                        layer.msg("添加失败，此用户已存在", { icon: 5 });
+                    }
+                }
+            });
+            return false;
+        })
+        //修改用户
+        form.on('submit(submitE)', function (data) {
+            var data = data.field;
+            layui.jquery.ajax({
+                type: "POST",
+                url: '../User/EditData',
+                data: data,
+                dataType: "JSON",
+                success: function (res) {
+                    if (res == '1') {
+                        //console.log(res);
+                        layer.msg("修改成功", { icon: 6, time: 1000 }, function () {
+                            layer.closeAll();
+                            renderTable();
+                        });
+                    }
+                    else {
+                        layer.msg("修改失败", { icon: 5 });
+                    }
+                }
+            });
+            return false;
+        })
+        //删除菜单
+        function Del(obj) {
+            var str = "";
+            var msg = "";
+            var l = obj.data.length;
+            for (var i = 0; i < l; i++) {
+                str += "'" + obj.data[i].UserID + "',";
+                msg += obj.data[i].UserName + ","
+            }
+            layer.confirm('确定要删除' + msg.substr(0, msg.length - 1) + '吗?', { icon: 2, title: '提示' }, function (index) {
+                layui.jquery.ajax({
+                    type: "POST",
+                    url: '../User/DelData',
+                    data: { delstr: str },
+                    dataType: "JSON",
+                    success: function (res) {
+                        if (res > 0) {
+                            var msg = "成功删除" + res + "条记录！";
+                            layer.msg(msg, { icon: 6, time: 1000 }, function () {
+                                layer.close(index);
+                                renderTable();
+                            });
+                        }
+                        else {
+                            layer.msg("删除失败", { icon: 5 });
+                        }
+                    }
+                });
+            });
+        }
+    })
+</script>
+</body>
+</html>

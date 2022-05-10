@@ -1,0 +1,28 @@
+﻿ .layui-table-cell {
+     text-align: center;
+ }
+.my-form {
+    margin-top: 5px;
+}
+.item{
+    margin-left: 150px;
+}
+.layui-form-item {
+    margin-top:5px;
+    margin-bottom:5px;
+}
+.my-form-item{
+    padding-top: 10px;
+}
+.layui-form-select {
+    width:190px;
+    height:38px;
+}
+body .layui-layer-page 
+.layui-layer-content { 
+    overflow: visible;
+}
+.layui-table,
+.layui-table-view {
+    margin: 0;
+}

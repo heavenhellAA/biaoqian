@@ -1,0 +1,289 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<meta name="renderer" content="webkit" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="author" content="刘定" /> 
+	
+	<title>艾华集团 | 客户标签打印系统</title>
+<link href="../../Scripts_UI/layui/css/layui.css" rel="stylesheet" />
+    <script src="../../Scripts/jquery-2.1.1.min.js"></script>
+	<!--[if lt IE 9]>
+	<script src="https://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+	<script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+    <style>
+         .layui-body {
+             overflow-y: hidden;
+        }
+    </style>
+</head>
+<body class="layui-layout-body">
+	<div class="layui-layout layui-layout-admin">
+		<div class="layui-header">
+             <!-- 头部区域 -->
+			<a class="layui-logo" href="javascript:window.location.reload();">艾华集团 | 客户标签打印系统</a>
+         <!--<ul class="layui-nav layui-layout-left">
+          <li class="layui-nav-item layadmin-flexible" lay-unselect>
+            <a href="javascript:;" layadmin-event="flexible" title="侧边伸缩">
+              <i class="layui-icon layui-icon-shrink-right" id="LAY_app_flexible"></i>
+            </a>
+          </li>
+          <li class="layui-nav-item" lay-unselect>
+            <a href="javascript:;" layadmin-event="refresh" title="刷新">
+              <i class="layui-icon layui-icon-refresh-3"></i>
+            </a>
+          </li>
+        </ul>-->
+        <div style="position:absolute;margin-top:11px;z-index:-10;">
+        <form class="layui-form" action="" style="margin-left:300px;width:250px;">
+        <select id="menusearch" name="menusearch" lay-verify="required" lay-search=""  lay-filter="qiehuan">
+
+        </select>
+        </form>
+        </div>
+			<nav class="layui-layout-right"  style="padding-right:20px">
+				<ul class="layui-nav">
+					@*<li class="layui-nav-item layui-hide-xs"><a href="../manuals/index.html" target="_blank">在线文档</a></li>*@
+					<li class="layui-nav-item">
+						<a href="javascript:void(0);">
+					@*		<img src="assets/images/face.jpg" class="layui-nav-img userAvatar"/>*@
+							<cite class="userName">@ViewData["UserName"]</cite>
+						</a>
+						<dl class="layui-nav-child">
+						  <dd><a href="javascript:void(0);" onclick="OpenUpdatePwd();">修改密码</a></dd>
+						  <dd><a href="javascript:void(0);" onclick="Exit();">退出系统</a></dd>
+						</dl>
+					</li>
+				</ul>
+			</nav>
+		</div>
+     <div class="layui-side layui-bg-black">
+         <div class="layui-side-scroll">
+             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+             <ul class="layui-nav layui-nav-tree" lay-filter="test" id="memus" >
+             </ul>
+         </div>
+     </div>  
+		<div class="layui-body">	
+             <!-- 动态选项卡 -->
+        <div id="tabzu" class="layui-tab layui-tab-card layui-tab-brief" lay-filter="tabMenu" lay-allowclose="true">
+            <ul class="layui-tab-title">
+              
+            </ul>
+            <div class="layui-tab-content" style="padding:2px;"></div>
+        </div>
+		@*	<iframe name="right" id="right" frameborder="0" class="layui-body-iframe" src="page/home.html"></iframe>*@
+		</div>
+	</div>
+<div id="edit-main" style="display: none;">
+    <div class="my-form">
+              <div  style="margin-top:20px;" class="layui-form-item my-form-item" >
+                <label class="layui-form-label">旧密码：</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="OldPwd" id="OldPassword"  lay-verify="required" autocomplete="off"  placeholder="请输入旧密码"
+                      class="layui-input" />
+                </div>
+            </div>
+            <div class="layui-form-item my-form-item">
+                <label class="layui-form-label">新密码：</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="NewPwd" id  ="NewPassword"  lay-verify="required" autocomplete="off" placeholder="请输入新密码"
+                           class="layui-input" >
+                </div>
+            </div>
+            <div class="layui-form-item my-form-item">
+                <label class="layui-form-label">确认密码：</label>
+                <div class="layui-input-inline">
+                    <input type="password" name="NewPwd2" id  ="NewPassword2" autocomplete="off"  lay-verify="required" placeholder="请再次输入新密码"
+                           class="layui-input" >
+                </div>
+            </div>
+            <div class="layui-form-item my-form-item">
+                <div class="layui-input-block item">
+                   <button class="layui-btn" id="btsave" type="button" onclick="UpdatePwd()">保存</button>
+                   <button class="layui-btn layui-btn-primary" type="button" onclick="resPwd()">重置</button>
+                </div>
+            </div>
+    </div>
+</div>
+    <!--Recommended scripts position-->
+    <script src="../../Scripts_UI/layui/layui.all.js"></script>
+    <script src="../../Scripts/xybself.js?version=1.1" charset="utf-8"></script>
+<script>
+    addTab("版本更新说明", "../Bbgxnote/Index") //登陆成功进入页面后自动弹出版本更新历史说明
+    //JavaScript代码区域
+    layui.use('element', function () {
+        var form = layui.form;
+        //监听页面关闭
+        layui.element.on('tabDelete', function (data) {
+            //console.log(this); //当前Tab标题所在的原始DOM元素
+            //console.log(data.index); //得到当前Tab的所在下标
+            //console.log(data.elem); //得到当前的Tab大容器
+            //console.log(this.previousSibling.data); //得到当前Tab的名称
+            //console.log(CookieUtil.get("gbk"));
+            CookieUtil.set("gbk", "1", new Date(0), "/", null, false)
+        });
+        var $ = layui.$;
+            function checkLastItem(arr, i) {
+                return arr.length == (i + 1);
+            }
+
+            function getAhtml(obj) {
+                return "<a href=\"javascript:void(0);\" onclick=\"addTab('" + obj.MenuName + "','" + obj.Url + "')\" >" + obj.MenuName + "</a>";
+            }
+            //动态菜单
+            layui.jquery.ajax({
+                url: "../Home/Getmenudt",
+                method: 'GET',
+                success: function (res) {
+                    var html = "";
+                    var html2 = "<option value=\"\"  selected>直接选择或搜索选择</option>";
+                    for (var i = 0; i < res.length; i++) {
+                        var strli = "<li class=\"layui-nav-item lay-unselect \" >";
+                        if (res[i].Url == '#') {
+                            strli = strli + "<a href=\"javascript:void(0);\">" + res[i].MenuName + "</a>";
+                        } else {
+                            strli = strli + getAhtml(res[i]);
+                            html2 = html2 + "<option value=\"" + res[i].Url + "\">" + res[i].MenuName + "</option>";
+                        }
+                        if (res[i].ParentNode == "0" && !checkLastItem(res, i) && res[i + 1].ParentNode != "0") {
+                            strli = strli + "<dl class=\"layui-nav-child\" >";                            
+                            for (; !checkLastItem(res, i) && res[i + 1].ParentNode != "0"; i++) {
+                                strli = strli + "<dd>" + getAhtml(res[i + 1]) + "</dd>";
+                                html2 = html2 + "<option value=\"" + res[i + 1].Url + "\">" + res[i + 1].MenuName + "</option>";
+                            }
+                            strli = strli + "</dl>";
+                        }
+                        strli = strli + "</li>";
+                        html = html + strli;
+                    }
+                    layui.jquery("#memus").html(html);
+                    $("#menusearch").append(html2)
+                    //console.log(html2);
+                    //使用layui下拉框的必要代码
+                    var value = "";
+                    layui.use('form', function () {
+                        var form = layui.form;
+                        //设置默认选中值
+                        //if (value != undefined && value != null && value != '') {
+                            $("#menusearch").val(value);
+                        //}
+                        //监听下拉列表切换事件
+                            form.on('select(qiehuan)', function(data){
+                                //console.log(data);                               
+                                //console.log($("#menusearch").find('option:selected').text()); 获取选中的值。
+                                addTab($("#menusearch").find('option:selected').text(),data.value);
+                                form.render('select');//select是固定写法 不是选择器                               
+                            });
+                        form.render();//重载表单
+                    });
+                    layui.element.init(); //一定初始化一次
+                }
+            })
+    });
+        //添加选项卡
+    function addTab(name, url) {
+        if (layui.jquery(".layui-tab-title li[lay-id='" + name + "']").length > 0) {
+            //选项卡已经存在
+            layui.element.tabChange('tabMenu', name);
+            layer.msg("切换了-" + name)
+        } else {
+            //动态控制iframe高度
+            var tabheight = layui.jquery(window).height() - 112;
+            contentTxt = '<iframe src="' + url + '" scrolling="yes" width="100%" height="' + (tabheight) + 'PX"></iframe>';
+            //新增一个Tab项
+            layui.element.tabAdd('tabMenu', {
+                title: name,
+                content: contentTxt,
+                id: name
+            })
+            //切换刷新
+            layui.element.tabChange('tabMenu', name)               
+            layer.msg("打开-" + name)
+        }
+    }
+        function Exit() {
+            $.ajax({
+                url: "../Home/ReomveCookie",
+                type: "POST",
+                success: function (data) {
+                    if (data == 1) {
+                        // layer.msg('安全退出成功！', '提示', 'success');
+                        layer.msg('安全退出成功!', {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function () {
+                            window.location.href = "../Default/login";
+                        });
+                    }
+                    else {
+                        layer.msg('您已安全退出，请勿重复操作！',{ icon: 2 });
+                    }
+                }
+            });
+        }
+        function OpenUpdatePwd() {
+            layer.open({
+                title: '修改密码',
+                /*如果是外部的html，type2，内部，type1*/
+                type: 1,
+                btnAlign: 'c',
+                area: ['360px', '300px'],
+                content: $("#edit-main"),
+                //未做的是去监听表单提交，给后台发送ajax请求
+            })
+            layer.msg("修改密码后需重新登录", { icon: 7 ,time:2000})
+        }
+        function resPwd() {
+            $("#OldPassword").val("");
+            $("#NewPassword").val("");
+            $("#NewPassword2").val("");
+        }
+        function UpdatePwd() {
+            var OldPassword = $("#OldPassword").val();
+            var NewPassword = $("#NewPassword").val();
+            var NewPassword2 = $("#NewPassword2").val();
+            if (NewPassword != NewPassword2) {
+                layer.msg("两次输入的密码不一致！", { icon: 5 });
+                return
+            }
+            else {
+                var registerLoadIndex = layer.load(2);
+                var data = {
+                    OldPassword: OldPassword,
+                    NewPassword: NewPassword,
+                    NewPassword2: NewPassword2
+                };
+                layui.jquery.ajax({
+                    type: "POST",
+                    url: '../Home/EditPwd',
+                    data: data,
+                    dataType: "JSON",
+                    success: function (res) {
+                        if (res == '1') {
+                            //console.log(res);
+                            layer.msg("修改成功,2秒后跳转到登录页面...", { icon: 6, time: 2000 }, function () {
+                                layer.closeAll();
+                                layer.close(registerLoadIndex);
+                                location.href = "../Default/login";
+                            });
+                        }
+                        else if (res == '2') {
+                            layer.close(registerLoadIndex);
+                            layer.msg("修改失败,旧密码错误", { icon: 5 });
+                        }
+                        else {
+                            layer.close(registerLoadIndex);
+                            layer.msg("修改失败", { icon: 5 });
+                        }
+                    }
+                });
+                return false;
+            }
+        }
+</script>
+</body>
+</html>

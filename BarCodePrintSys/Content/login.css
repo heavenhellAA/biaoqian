@@ -1,0 +1,76 @@
+﻿/*登陆表单样式 start*/
+body {
+    width: 100%;
+    height: 100%;
+    background: url("../Images/img/Index_bg.png") no-repeat;
+    background-size: cover;
+}
+h1 {
+    text-align:center;
+    color:white;
+    margin-top:3%;
+    letter-spacing:5px;
+    font-size:36px;
+}
+.loginForm{
+    margin-left: 47%;
+    margin-top: 6.5%;
+    /*background-color: #cccccc;*/
+    background-color: #e7e7e7;
+    width: 375px;
+    height: 310px;
+    float: left;
+    z-index: 9999;
+    position: fixed;
+    opacity: 0.9;
+}
+.adminInput{
+    width: 280px;
+    height: 40px;
+    font-size: 15px;
+    border-radius: 0.5em;
+    /*margin-left: auto;*/
+    /*border: 1px solid #cccccc;*/
+}
+.logoLabel {
+    width: 375px;
+    height: 40px;
+    padding-top: 25px;
+    text-align:center;
+    line-height:40px;
+    font-size: 22px;
+    font-weight:bold;
+    letter-spacing:2px;
+}
+.submitDiv{
+    width: 365px;
+    height: 40px;
+    padding-top: 10px;
+    float: left;
+    text-align:center;
+    padding-left: 10px;
+}
+.submit{
+    width: 285px;
+    height: 40px;
+    font-size:18px;
+    color:white;
+    border-radius: 0.5em;
+    background-color:#1072a2;
+}
+.layui-form-item {
+    padding-top:15px;
+    padding-left:0;
+    text-align:center;
+}
+.my-form-item{
+     padding-top: 20px;
+    }
+.layui-form-label {
+    text-align:left;
+    padding-left:20px;
+}
+.layui-form-label, layui-icon {
+    width:20px;
+}
+/*登陆表单样式 end*/

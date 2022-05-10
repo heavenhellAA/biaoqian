@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录 | 客户标签打印系统</title>
+  <link href="../../Scripts_UI/layui/css/layui.css" rel="stylesheet" />
+    <script src="../../Scripts/jquery-2.1.1.min.js"></script>
+    <link href="../../Content/login.css" rel="stylesheet" />
+</head>
+<body>
+    <h1> 艾华集团 | 客户标签打印系统</h1>
+    <div class="loginForm">
+                <div class="logoLabel">
+                    <label class="logoLabel-label">  艾华集团 | 客户标签打印系统</label>
+                </div>
+                <div class="layui-form-item my-form-item">
+                    <label class="layui-form-label layui-icon">&#xe770;</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="loginUsername" name="username" lay-verify="required" placeholder="请输入用户名" 
+                            autocomplete="off" class="layui-input adminInput" value="@ViewData["UserName"]">
+                    </div>
+                </div>
+                <div class="layui-form-item my-form-item">
+                    <label class="layui-form-label layui-icon">&#xe673;</label>
+                    <div class="layui-input-inline">
+                        <input type="password" id="loginPassword" name="password" lay-verify="required" placeholder="请输入密码" 
+                            autocomplete="off" class="layui-input adminInput" value="@ViewData["UserPassword"]">
+                    </div>
+                </div>
+             <div style="padding-left:175px">
+              <input id="saveuser" type="checkbox" class="layui-checkbox layui-input-inline">
+              <label class="layui-input-inline">记住账号</label>
+              <input id="savepwd" type="checkbox" class="layui-checkbox layui-input-inline" style="margin-left:10px">
+              <label class="layui-input-inline">记住密码</label>
+            </div>
+                <div class="submitDiv">
+                    <input id="loginBtn" type="button" class="layui-btn layui-btn-primary submit" value="登 录">
+            </div>
+    </div>
+<script src="../../Scripts_UI/layui/layui.all.js"></script>
+    <script>
+        $(function () {
+            var user = '@ViewData["UserName"]';
+            var pwd = '@ViewData["UserPassword"]';
+            if (user != '' && user.length > 0) {
+                saveuser.checked = true;
+            }
+            else {
+                saveuser.checked = false;
+            }
+            if (pwd != '' && pwd.length > 0) {
+                savepwd.checked = true;
+            }
+            else {
+                savepwd.checked = false;
+            }
+        });
+        document.onkeydown = function (event) {
+            if (event.keyCode == 13)  //回车键的键值为13
+                login();
+        }
+        layui.use(['layer'], function () {
+            var layer = layui.layer;
+        })
+        $(function () {
+            // 登陆事件
+            $('#loginBtn').click(function () {
+                login();
+            });
+        });
+        // 校验用户名、密码
+        function validateCode() {
+            var loginUsername = $('#loginUsername').val();
+            var loginPassword = $('#loginPassword').val();
+            if ($.trim(loginUsername) == '' || $.trim(loginUsername).length <= 0) {
+                layer.msg('用户名不能为空！', { icon: 0 });
+                return false;
+            }
+            if ($.trim(loginPassword) == '' || $.trim(loginPassword).length <= 0) {
+               // layer.alert("密码不能为空", { icon: 0 });
+                layer.msg('密码不能为空！', { icon: 0 });
+                return false;
+            }
+            return true;
+        }
+        // 登录流程
+        function login() {
+            if (!validateCode()) {
+                //阻断提示
+            } else {
+                var loginUsername = $('#loginUsername').val();
+                var loginPassword = $('#loginPassword').val();
+                $("#saveuser").is(':checked') ? saveuser = true : saveuser = false;
+                $("#savepwd").is(':checked') ? savepwd = true : savepwd = false;
+                var registerLoadIndex = layer.load(2);
+                $('#loginBtn').val("正在登录...");
+                layui.jquery.ajax({
+                    url: "../Default/Loging",
+                    type: "POST",
+                    data: { loginUsername: loginUsername, loginPassword: loginPassword, saveuser:saveuser,savepwd:  savepwd },
+                    dataType: "JSON",
+                    success: function (data) {
+                        if (data == 0) {
+                            layer.close(registerLoadIndex);
+                            $('#loginBtn').val("登录");
+                            layer.alert("用户名不存在，请检查后重新登录！" ,{ icon: 0 });
+                        }
+                        else if (data == 1) {
+                            layer.close(registerLoadIndex);
+                            $('#loginBtn').val("登录");
+                            layer.alert("密码错误！", { icon: 0 });
+                        }
+                        else {
+                            layer.close(registerLoadIndex);
+                            location.href = "../Home/Index";
+                        }
+                    }
+                });
+            }
+
+        }
+    </script>
+</body>
+</html>
