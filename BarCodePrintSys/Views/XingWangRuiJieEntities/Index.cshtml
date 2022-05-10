@@ -69,18 +69,18 @@
             </div>
             <div style="width: 400px;" class="font">
                 数量:
-                <input id="nkzzm" type="text" onblur="Check();" />
+                <input id="amount" type="text" onblur="Check();" />
             </div>
-            <div style="width: 400px;" class="font">
+@*            <div style="width: 400px;" class="font">
                 Item:
                 <input id="Item1" type="text" value="" style="width:110px;" placeholder="11位客户料号" />
                 <input id="Item2" type="text" value="0394" style="width:40px;"
                        readonly />
                 <input id="Item3" type="text" style="width:10px;" maxlength="1" minlength="1" placeholder="1位采购渠道" />
-                <input id="Item6" type="text" value="" style="width:60px;" maxlength="6" minlength="6" placeholder="6位内控追踪码" onblur="tongbu(2)" />
-                <input id="Item7" type="text" value="1" style="width:10px;" placeholder="物料版本号" readonly />
-                <input id="Item5" type="text" value="" style="width:40px;" maxlength="4" minlength="4" placeholder="4位数量" />
-            </div>
+                <input id="Item4" type="text" value="" style="width:60px;" maxlength="6" minlength="6" placeholder="6位内控追踪码" onblur="tongbu(2)" />
+                <input id="Item5" type="text" value="1" style="width:10px;" placeholder="物料版本号" readonly />
+                <input id="Item6" type="text" value="" style="width:40px;" maxlength="4" minlength="4" placeholder="4位数量" />
+            </div>*@
             <div style="width: 400px;" class="font">
                 打印张数:
                 <input type="number" id="numcount" oninput="if(value > 999 || value < 1 ){alert('打印张数范围在1到999之间！');value = ''}" />
@@ -279,7 +279,109 @@
             });
 
             //内箱最小包装打印事件
-            
+            $("#Printing").click(function () {
+                var str = document.getElementsByName('ylbd');//遗漏补打 
+                var ylbd = 0;
+                if (str[0].checked == true) {
+                    ylbd = str[0].value;
+                }
+                var tagType = $("#packageType").val();
+                //选择内箱最小包装打印，只支持一次性打完内箱标签自动带一张外箱标签
+                var x = document.getElementById("textarea").getElementsByTagName("input");
+                //填写信息是否完整
+                for (var i = 0; i < x.length; i++) {
+                    if (x[i].value == "") {
+                        alert('信息未填写完整');
+                        x[i].focus();
+                        return false;// 有空值
+                    }
+                }
+                var khlh = document.getElementById("khlh").value;//客户料号
+                var tagType = document.getElementById("tagType").value;//包装类型
+                var csdm = document.getElementById("csdm").value;//厂商代码
+                var cgqd = document.getElementById("cgqd").value;//采购渠道
+                var nkzz = document.getElementById("nkzz").value;//内控追踪
+                var amount = document.getElementById("amount").value;//数量
+                var wlbbh = document.getElementById("wlbbh").value;//物料版本号
+                var num_print = document.getElementById("numcount").value;//打印张数
+                if (tagType==0) {
+                    var FIFO = document.getElementById("khlh").value + document.getElementById("csdm").value + document.getElementById("cgqd").value + document.getElementById("nkzz").value +
+                        document.getElementById("wlbbh").value + document.getElementById("amount").value;
+                }
+                else {
+                    var FIFO = document.getElementById("khlh").value + document.getElementById("csdm").value + document.getElementById("cgqd").value + document.getElementById("nkzz").value +
+                        document.getElementById("amount").value;
+                }
+                if (Item2.length != 2 || Item3.length != 3 || Item5.length != 5) {
+                    alert("Item处信息未填写完整，完整组成为2码5码.3码6位出货日期6码数量！");
+                    return false;
+                }
+                if (!confirm("您确定要打印吗?")) return;
+                showmsg();
+                //添加外箱打印数据数据
+                $.ajax({
+                    type: "POST",
+                    url: "/Dafang/AddDafangPrint",
+                    data: {
+@*                        cnbqywm: cnbqywm,
+                        packageType: packageType,
+                        chrq: chrq,
+                        scrq: scrq,
+                        gysdm: gysdm,
+                        sl: sl,
+                        scph: scph,
+                        FIFO: FIFO,
+                        Item: Item,
+                        Lot: Lot,
+                        Item2: Item2,
+                        Item3: Item3,
+                        Item5: Item5,
+                        num_print: num_print,
+                        ylbd: ylbd,*@
+                    },
+                    dataType: "text",
+                    success: function (data) {
+                        var str = data.substring(3);
+                        var arr = str.split(',');
+                        if (data.substring(0, 1) > 0) {
+                            var num1 = $("#numcount").val();
+                            var headstr = "<html><body>";
+                            var footstr = "</body></html>";
+                            var printData1 = '';
+                            var fenye = '<div style="page-break-after:always;"></div>';    //分页
+
+
+                            for (i = 0; i < num1; i++) {
+                                lsh = arr[i];//流水号
+                                $("#Lot_msg").html(Lot + lsh);
+                                $("#onecode_Lot").barcode(Lot + lsh, 'code128', { barWidth: 1, barHeight: 26, fontSize: 6, showHRI: false });
+                                printData1 += document.getElementById("PrintArea").innerHTML;
+                                if (i != num1 - 1) {
+                                    printData1 = printData1 + fenye;
+                                }
+                            }
+
+                            var printData = printData1;// 获得 div 里的所有 html 数据
+                            document.body.innerHTML = headstr + printData + footstr;
+
+                            // 二维码  一维码 可能是太长了 必须等待 要不然打印出来没有二维码
+                            window.setTimeout(function () {
+                                location.href = location.href;  //返回主界面
+                                window.print();
+                            }, 3000);
+
+                        } else if (data.substring(0, 2) == -1) {
+                            alert("请不要输入非法字符,如果属于必输内容，请联系IT！");
+                        } else {
+                            alert("500,打印记录生成失败，本次打印终止。");
+                        }
+                    },
+                    error: function (data) {
+                        alert("501,打印记录生成失败，本次打印终止。");
+                    }
+                })
+
+            })
 
             //作废打印记录(多选)
             function Zuofei(obj) {
@@ -322,7 +424,7 @@
                     //更新补打标记
                     $.ajax({
                         type: "POST",
-                        url: "/XingWangRuiJieEntities/UpdateXingWangRuiJieEntitiesPrint_BD",
+                        url: "/XingWangRuiJieEntities/UpdatePrint_BD",
                         data: {
                             id: obj.data[0].n_id
                         },

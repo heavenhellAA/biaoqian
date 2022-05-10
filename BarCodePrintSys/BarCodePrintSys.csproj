@@ -478,7 +478,6 @@
     <Content Include="Views\LuChuan\Index.cshtml" />
     <Content Include="Views\Dafang\Index.cshtml" />
     <Content Include="Views\Haixinsl0412\Index.cshtml" />
-    <Content Include="Views\XingWangRuiJieEntities\Index1111.cshtml" />
     <Content Include="Views\XingWangRuiJieEntities\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
