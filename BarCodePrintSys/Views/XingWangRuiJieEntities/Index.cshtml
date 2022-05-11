@@ -86,18 +86,20 @@
             </div>
         </div>
 
-
         <!--右侧打印区域-->
-        <div id="PrintArea" style="width: 100mm; height: 50mm; vertical-align: top; display: inline-block; margin-left: 20px; white-space: nowrap; font-family: SimSun,monospace;">
+        <div id="PrintArea" style="width: 100mm; height: 30mm; vertical-align: top; display: inline-block; margin-left: 20px; white-space: normal;font-family: SimSun,monospace; ">
             <!--使用表格显示-->
-            <table style="border: thin; width: 80mm; height: 30mm; margin-left: 4px; margin-top: 20px;" rules="rows">
-                <tr style="height: 19px;">
-                    条码区
-                </tr>
-                <tr style="height: 19px;">
-                    编号区
-                </tr>
+            <table style="border: thin; width: 98mm; height: 28mm; margin-left: 4px; margin-top: 4px;" rules="rows">
+                <tbody>
+                    <tr style="height: 40px;">
+                        <td colspan="3" id="onecode" class="onecode-text" align="center" style="border-right-style: solid;"></td>
+                    </tr>
+                    <tr  style="height: 20px;border-top-style:hidden;">
+                        <td colspan="3" id="onecode_msg" class="onecode-text" align="center" style="padding-left:10px; border-right-style: solid;"></td>
+                    </tr>
+                </tbody>
             </table>
+
         </div>
     </div>
 
@@ -145,6 +147,8 @@
                 }
             });
         }
+
+
         function tongbu(s) {
             var value1 = document.getElementById("FIFO2").value;
             var value2 = document.getElementById("Item6").value;
@@ -332,11 +336,10 @@
                             var printData1 = '';
                             var fenye = '<div style="page-break-after:always;"></div>';    //分页
 
-
                             for (i = 0; i < num1; i++) {
-                                lsh = arr[i];//流水号
-                                $("#Lot_msg").html(s_id);
-                                $("#onecode_Lot").barcode(s_id, 'code128', { barWidth: 1, barHeight: 26, fontSize: 6, showHRI: false });
+                                $("#onecode").barcode(YWM, 'code128', { barWidth: 1, barHeight: 30, fontSize: 6, showHRI: false });
+                                onecode_msg
+                                $("#onecode_msg").html(YWM);
                                 printData1 += document.getElementById("PrintArea").innerHTML;
                                 if (i != num1 - 1) {
                                     printData1 = printData1 + fenye;
@@ -423,6 +426,7 @@
                                 for (i = 0; i < num1; i++) {
                                     $("#Lot_msg").html(Lot);
                                     $("#onecode_Lot").barcode(Lot, 'code128', { barWidth: 1, barHeight: 26, fontSize: 6, showHRI: false });
+                                    $("#sl_msg").html("Q'ty：" + sl + "PCS");
                                     printData1 += document.getElementById("PrintArea").innerHTML;
                                     if (i != num1 - 1) {
                                         printData1 = printData1 + fenye;
