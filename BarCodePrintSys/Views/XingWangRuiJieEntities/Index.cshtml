@@ -71,16 +71,6 @@
                 数量:
                 <input id="amount" type="text" />
             </div>
-            @*            <div style="width: 400px;" class="font">
-                    Item:
-                    <input id="Item1" type="text" value="" style="width:110px;" placeholder="11位客户料号" />
-                    <input id="Item2" type="text" value="0394" style="width:40px;"
-                           readonly />
-                    <input id="Item3" type="text" style="width:10px;" maxlength="1" minlength="1" placeholder="1位采购渠道" />
-                    <input id="Item4" type="text" value="" style="width:60px;" maxlength="6" minlength="6" placeholder="6位内控追踪码" onblur="tongbu(2)" />
-                    <input id="Item5" type="text" value="1" style="width:10px;" placeholder="物料版本号" readonly />
-                    <input id="Item6" type="text" value="" style="width:40px;" maxlength="4" minlength="4" placeholder="4位数量" />
-                </div>*@
             <div style="width: 400px;" class="font">
                 打印张数:
                 <input type="number" id="numcount" oninput="if(value > 999 || value < 1 ){alert('打印张数范围在1到999之间！');value = ''}" />
@@ -328,6 +318,8 @@
                         s_wlbbh: wlbbh,
                         s_amount: amount,
                         s_id: YWM,
+                        num_print: num_print,
+                        ylbd: ylbd,
                     },
                     dataType: "text",
                     success: function (data) {
@@ -343,8 +335,8 @@
 
                             for (i = 0; i < num1; i++) {
                                 lsh = arr[i];//流水号
-                                $("#Lot_msg").html(Lot + lsh);
-                                $("#onecode_Lot").barcode(Lot + lsh, 'code128', { barWidth: 1, barHeight: 26, fontSize: 6, showHRI: false });
+                                $("#Lot_msg").html(s_id);
+                                $("#onecode_Lot").barcode(s_id, 'code128', { barWidth: 1, barHeight: 26, fontSize: 6, showHRI: false });
                                 printData1 += document.getElementById("PrintArea").innerHTML;
                                 if (i != num1 - 1) {
                                     printData1 = printData1 + fenye;

@@ -1,9 +1,5 @@
-﻿using BarCodePrintSys.Models.Prints;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace BarCodePrintSys.Controllers
@@ -74,7 +70,7 @@ namespace BarCodePrintSys.Controllers
                 "and '" + limit_sql + "' * ('" + page_sql + "' - 1) + '" + limit_sql + "' " +
                 "order by id";
 
-            sql+= " select COUNT(n_id)  as zongshu " +
+            sql += " select COUNT(n_id)  as zongshu " +
                 "from tbXingWangRuiJiePrint where n_state = 0";
             DataSet ds = DBHelper.getDateSet(sql);
             //将DataSet转化为DataTable,这里实际上是转list用但没用到
@@ -91,21 +87,14 @@ namespace BarCodePrintSys.Controllers
             string lsary = "";
             string sql;
             int id = 1;
-            string cnbqywm = Func.Zhuru(Request["cnbqywm"]);
-            string packtype = Func.Zhuru(Request["packtype"]);
-            string chrq = Func.Zhuru(Request["chrq"]);
-            string scrq = Func.Zhuru(Request["scrq"]);
-            string gysdm = Func.Zhuru(Request["gysdm"]);
-            string sl = Func.Zhuru(Request["sl"]);
-            string scph = Func.Zhuru(Request["scph"]);
-            string FIFO = Func.Zhuru(Request["FIFO"]);
-            string Item = Func.Zhuru(Request["Item"]);
-            string Lot = Func.Zhuru(Request["Lot"]);
-            string Item2 = Func.Zhuru(Request["Item2"]);
-            string Item3 = Func.Zhuru(Request["Item3"]);
-            string Item5 = Func.Zhuru(Request["Item5"]);
-            string lsh = Getlsnum(chrq);
-            string lotmsg = Lot + lsh;
+            string s_khlh = Func.Zhuru(Request["s_khlh"]);
+            string s_csdm = Func.Zhuru(Request["s_csdm"]);
+            string s_cgqd = Func.Zhuru(Request["s_cgqd"]);
+            string s_nkzz = Func.Zhuru(Request["s_nkzz"]);
+            string s_wlbbh = Func.Zhuru(Request["s_wlbbh"]);
+            string s_amount = Func.Zhuru(Request["s_amount"]);
+            string s_id = Func.Zhuru(Request["s_id"]);
+            //string lsh = Getlsnum(DateTime.Now.ToString("yyMM");
             string ylbd = Func.Zhuru(Request["ylbd"]);
             int num_print = int.Parse(Func.Zhuru(Request["num_print"]));
             string creatorid = Server.UrlDecode(Request.Cookies["bcp_userInfo"]["UserID"].ToString());
@@ -113,9 +102,12 @@ namespace BarCodePrintSys.Controllers
             string groupid = DBHelper.getuserGroup(creatorid);
             string roleid = Server.HtmlDecode(Request.Cookies["bcp_userInfo"]["RoleID"].ToString());
             //下面的SQL是不完整的只是单纯检查下SQL注入。
-            sql = "Insert Into tbDafangPrint(s_id,s_cnbqywm,s_packageType,s_chrq,s_scrq,s_sl,s_lsh,s_gysdm,s_scph,s_Item2,s_Item5,s_Item3,s_FIFOmsg,s_Itemmsg,s_Lotmsg,s_creator,s_createtime,s_Groupid,s_Roleid,s_waternum,n_state,n_bdprint) ";
-            sql += "values(NEWID(),'" + cnbqywm + "','" + packtype + "','" + chrq + "','" + scrq + "','" + sl + "','" + lsh + "','" + gysdm + "','" + scph + "','" + Item2 + "','" + Item5 + "','" + Item3 + "','" + FIFO + "','" + Item + "','" + lotmsg + "'";
-            sql += ",'" + creatorid + "','" + nowtime + "','" + groupid + "','" + roleid + "','" + id + "'+'/" + num_print + "',0,'" + ylbd + "') ";
+            /* sql = "Insert Into tbDafangPrint(s_id,s_cnbqywm,s_packageType,s_chrq,s_scrq,s_sl,s_lsh,s_gysdm,s_scph,s_Item2,s_Item5,s_Item3,s_FIFOmsg,s_Itemmsg,s_Lotmsg,s_creator,s_createtime,s_Groupid,s_Roleid,s_waternum,n_state,n_bdprint) ";
+             sql += "values(NEWID(),'" + cnbqywm + "','" + packtype + "','" + chrq + "','" + scrq + "','" + sl + "','" + lsh + "','" + gysdm + "','" + scph + "','" + Item2 + "','" + Item5 + "','" + Item3 + "','" + FIFO + "','" + Item + "','" + lotmsg + "'";
+             sql += ",'" + creatorid + "','" + nowtime + "','" + groupid + "','" + roleid + "','" + id + "'+'/" + num_print + "',0,'" + ylbd + "') ";
+             */
+            sql = "INSERT INTO tbXingWangRuiJiePrint ( s_khlh, s_csdm,s_cgqd,s_nkzz,s_wlbbh,s_amount,s_creator,s_updator,s_createtime,s_updatetime,s_Groupid,s_Roleid,s_waternum,n_state,n_bdprint,s_id) " +
+                " VALUES('" + s_khlh + "','" + s_csdm + "','" + s_cgqd + "','" + s_nkzz + "','" + s_wlbbh + "','" + s_amount + "','" + creatorid + "'," +"NULL"+",'"+ nowtime + "','" + nowtime + "','" + groupid + "','" + roleid + "','" + num_print + "'," + 0 + "," + ylbd + ",'" + s_id + "')";
             var warndata = sql.IndexOf("warning");
             if (warndata != -1)
             {
@@ -127,12 +119,11 @@ namespace BarCodePrintSys.Controllers
             {
                 while (id <= num_print)
                 {
-                    lsh = Getlsnum(chrq);
-                    lotmsg = Lot + lsh;
-                    sql = "Insert Into tbDafangPrint(s_id,s_cnbqywm,s_packageType,s_chrq,s_scrq,s_sl,s_lsh,s_gysdm,s_scph,s_Item2,s_Item5,s_Item3,s_FIFOmsg,s_Itemmsg,s_Lotmsg,s_creator,s_createtime,s_Groupid,s_Roleid,s_waternum,n_state,n_bdprint) ";
-                    sql += "values(NEWID(),'" + cnbqywm + "','" + packtype + "','" + chrq + "','" + scrq + "','" + sl + "','" + lsh + "','" + gysdm + "','" + scph + "','" + Item2 + "','" + Item5 + "','" + Item3 + "','" + FIFO + "','" + Item + "','" + lotmsg + "'";
-                    sql += ",'" + creatorid + "','" + nowtime + "','" + groupid + "','" + roleid + "','" + id + "'+'/" + num_print + "',0,'" + ylbd + "') ";
-                    lsary = lsary + "," + lsh;
+                    sql = "INSERT INTO tbXingWangRuiJiePrint ( s_khlh, s_csdm,s_cgqd,s_nkzz,s_wlbbh,s_amount,s_creator,s_updator,s_createtime,s_updatetime,s_Groupid,s_Roleid,s_waternum,n_state,n_bdprint,s_id) " +
+                " VALUES('" + s_khlh + "','" + s_csdm + "','" + s_cgqd + "','" + s_nkzz + "','" + s_wlbbh + "','" + s_amount + "','" + creatorid + "'," + "NULL" + ",'" + nowtime + "','" + nowtime + "','" + groupid + "','" + roleid + "','" + num_print + "'," + 0 + "," + ylbd + ",'" + s_id + "')";
+
+                    //lsary = lsary + "," + lsh;
+                    lsary = lsary + "," + s_id;
                     code = DBHelper.excuteNoQuery(sql);
                     if (code == -1)
                     {
