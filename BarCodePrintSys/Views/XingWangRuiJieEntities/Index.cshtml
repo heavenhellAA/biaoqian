@@ -55,17 +55,16 @@
             </div>
             <div class="font" style="width: 400px;">
                 标签类型:
-                <select id="tagType" style="width: 203px;">
-                    <option value="0">星网锐捷/升腾资讯</option>
+                <select id="tagType" onChange="change()" style="width: 203px;">
+                    <option selected="selected" value="0">星网锐捷/升腾资讯</option>
                     <option value="1">锐捷网络</option>
                 </select>
             </div>
             <div class="font" style="width: 400px;">
                 采购渠道:
                 <select id="cgqd" style="width: 203px;">
-                    <option value="0">锐捷网络</option>
-                    <option value="1">星网锐捷</option>
-                    <option value="2">立泰</option>
+                    <option  value="1">锐捷网络</option>
+                    <option  value="2">立泰</option>
                 </select>
             </div>
             <div style="width: 400px;" class="font">
@@ -82,7 +81,7 @@
             </div>
             <div style="width: 400px;" class="font">
                 数量:
-                <input id="amount" type="text" onblur="CheckSl()"/>
+                <input id="amount" type="text" maxlength="5"/>
             </div>
             <div style="width: 400px;" class="font">
                 打印张数:
@@ -157,7 +156,7 @@
         tsdiv += '<ul style="font-size: 18px;">'
         tsdiv += '<li>1:一维码标签大小为80*30</li>'
         tsdiv += '<li>2:客户料号空格已自动补充，非必要禁止更改</li>'
-        tsdiv += '<li>3:周期进行了输入位数判定</li>'
+        tsdiv += '<li>3:</li>'
         tsdiv += '<li>4:</li>'
         tsdiv += '<li>5:</li>'
         tsdiv += '<li>6:</li>'
@@ -200,10 +199,16 @@
             function CheckSl() {
                 var tagType = document.getElementById("tagType").value;
                 var sl = document.getElementById("amount").value;
-                if (tagType == 0) {
+                if (tagType == "0") {
+                    if (sl.length > 4) {
+                        layer.msg('数量超出上限，请核实后重新输入！', { icon: 0 })
+                    }
                     document.getElementById("amount").value = addPreZero(sl, 4);
                 }
                 else {
+                    if (sl.length > 5) {
+                        layer.msg('数量超出上限，请核实后重新输入！', { icon: 0 })
+                    }
                     document.getElementById("amount").value = addPreZero(sl, 5);
                 }
             }
@@ -266,15 +271,15 @@
                     , cols: [[ //表头
                         { type: 'checkbox', fixed: true }
                         , { field: 'n_id', title: '序号', width: 80, fixed: true }
-                        , { field: 's_Id', title: '唯一标识', width: 110, hide: true }
-                        , { field: 's_cnywm', title: '厂内一维码', width: 200 }
-                        , { field: 's_khlh', title: '客户料号', width: 160 }
-                        , { field: 's_csdm', title: '厂商代码', width: 80 }
-                        , { field: 'tagType', title: '标签类型', width: 30, hide: true }
-                        , { field: 's_cgqd', title: '采购渠道', width: 80 }
+                        , { field: 's_id', title: '一维码信息', width: 120}
+                        , { field: 's_cnywm', title: '厂内一维码', width: 120 }
+                        , { field: 's_khlh', title: '客户料号', width: 120 }
+                        , { field: 's_csdm', title: '厂商代码', width: 120 }
+                        , { field: 'tagType', title: '标签类型', width: 120, templet: function (res) { if (res.tagType == '0') return '星网锐捷/升腾资讯'; else if (res.tagType == '1') return '锐捷网络'; } }
+                        , { field: 's_cgqd', title: '采购渠道', width: 120, templet: function (res) { if (res.s_cgqd == '0') return '固定渠道'; else if (res.s_cgqd == '1') return '星网锐捷'; else if (res.s_cgqd == '2') return '立泰'; } }
                         , { field: 's_nkzz', title: '内控追踪码', width: 120 }
                         , { field: 's_wlbbh', title: '物料版本号', width: 120 }
-                        , { field: 's_amount', title: '数量', width: 150 }
+                        , { field: 's_amount', title: '数量', width: 80 }
                         , { field: 's_creator', title: '创建人', width: 150 }
                         , { field: 's_updator', title: '更新者', width: 150 }
                         , { field: 's_createtime', title: '创建时间', width: 120 }
@@ -340,7 +345,7 @@
                 if (str[0].checked == true) {
                     ylbd = str[0].value;
                 }
-                var tagType = $("#tagType").val();
+                //var tagType = $("#tagType").val();
                 //选择内箱最小包装打印，只支持一次性打完内箱标签自动带一张外箱标签
                 var x = document.getElementById("textarea").getElementsByTagName("input");
                 //填写信息是否完整
@@ -351,24 +356,46 @@
                         return false;// 有空值
                     }
                 }
+                //switch (cgqd) {
+                //    case "0":
+                //        var cgqddm = 0;
+                //        break;
+                //    case "1":
+                //        var cgqddm = 1;
+                //        break;
+                //    case "2":
+                //        var cgqddm = 2;
+                //        break;
+                //}
                 var cnywm = document.getElementById("cnywm").value;//厂内一维码
                 var khlh = document.getElementById("khlh").value;//客户料号
-                var tagType = document.getElementById("tagType").value;//标签类型
                 var csdm = document.getElementById("csdm").value;//厂商代码
                 var cgqd = document.getElementById("cgqd").value;//采购渠道
                 var nkzz = document.getElementById("nkzz").value;//内控追踪
-                var amount = document.getElementById("amount").value;//数量
                 //var amount = document.getElementById("amount").value;//数量
                 var wlbbh = document.getElementById("wlbbh").value;//物料版本号
                 var num_print = document.getElementById("numcount").value;//打印张数
-                if (tagType == 0) {
-                    var YWM = document.getElementById("khlh").value + document.getElementById("csdm").value + document.getElementById("cgqd").value + document.getElementById("nkzz").value +
+                var tagType = document.getElementById("tagType").value;//标签类型
+                var amount = document.getElementById("amount").value;//数量
+                if (tagType == "0") {
+                    if (amount.length > 4) {
+                        layer.msg('数量超出上限，请核实后重新输入！', { icon: 0 })
+                    }
+                    document.getElementById("amount").value = addPreZero(amount, 4);
+                    amount = document.getElementById("amount").value;
+                    var YWM = document.getElementById("khlh").value + document.getElementById("csdm").value + cgqd+ document.getElementById("nkzz").value +
                         document.getElementById("wlbbh").value + document.getElementById("amount").value;
                 }
                 else {
-                    var YWM = document.getElementById("khlh").value + document.getElementById("csdm").value + document.getElementById("cgqd").value + document.getElementById("nkzz").value +
+                    if (amount.length > 5) {
+                        layer.msg('数量超出上限，请核实后重新输入！', { icon: 0 })
+                    }
+                    document.getElementById("amount").value = addPreZero(amount, 5);
+                    amount = document.getElementById("amount").value;
+                    var YWM = document.getElementById("khlh").value + document.getElementById("csdm").value + cgqd + document.getElementById("nkzz").value +
                         document.getElementById("amount").value;
                 }
+
                 //数据检查TODO
                 if (!confirm("您确定要打印吗?")) return;
                 //showmsg();
@@ -466,33 +493,25 @@
             function Bdprint(obj) {
 
                 document.getElementById("numcount").value = 1;//打印张数
-                //document.getelementbyid("s_khlh").value = obj.data[0].s_khlh;
                 document.getElementById("khlh").value = obj.data[0].s_khlh;
-                //document.getElementById("tagType").value = obj.data[0].s_cgqd;
                 document.getElementById("csdm").value = obj.data[0].s_csdm;
-                document.getElementById("tagType").value = obj.data[0].s_cgqd;
+                document.getElementById("tagType").value = obj.data[0].tagType;
                 document.getElementById("nkzz").value = obj.data[0].s_nkzz;
                 document.getElementById("amount").value = obj.data[0].s_amount;
                 document.getElementById("wlbbh").value = obj.data[0].s_wlbbh;
                 document.getElementById("cnywm").value = obj.data[0].s_cnywm;
-                //document.getelementbyid("num_print").value = obj.data[0].numcount;
-                //document.getElementById("wlbbh").value = obj.data[0].wlbbh;
                 //showmsg();
                 layer.confirm('确定要补打第' + obj.data[0].n_id + '条记录吗?', { icon: 7, title: '提示' }, function (index) {
-                    var khlh = document.getElementById("khlh").value;//客户料号
+                    //var khlh = document.getElementById("khlh").value;//客户料号
                     //var tagType = document.getElementById("tagType").value;//包装类型
-                    var csdm = document.getElementById("csdm").value;//厂商代码
-                    var cgqd = document.getElementById("tagType").value;//采购渠道
-                    var nkzz = document.getElementById("nkzz").value;//内控追踪
-                    var amount = document.getElementById("amount").value;//数量
-                    var wlbbh = document.getElementById("wlbbh").value;//物料版本号
+                    //var csdm = document.getElementById("csdm").value;//厂商代码
+                    //var cgqd = document.getElementById("s_cgqd").value;//采购渠道
+                    //var nkzz = document.getElementById("nkzz").value;//内控追踪
+                    //var amount = document.getElementById("amount").value;//数量
+                    //var wlbbh = document.getElementById("wlbbh").value;//物料版本号
+                    var s_id = obj.data[0].s_id;
                     var num_print = document.getElementById("numcount").value;//打印张数
-                    if (cgqd == 0) {
-                        var YWM = khlh + csdm + cgqd + nkzz + wlbbh + amount;
-                    }
-                    else {
-                        var YWM = khlh + csdm + cgqd + nkzz + amount;
-                    }
+                    var YWM = s_id;
 
                     //更新补打标记
                     $.ajax({
@@ -548,6 +567,28 @@
 
         });
         </script>
+
+
+        <script>
+            function change() {
+                var x = document.getElementById("tagType");
+                var y = document.getElementById("cgqd");
+                y.options.length = 0; // 清除second下拉框的所有内容
+                if (x.selectedIndex == 0) {
+                    y.options.add(new Option("星网锐捷", "1", false, true));  // 默认选中省会城市
+                    y.options.add(new Option("立泰", "2"));
+                }
+
+                if (x.selectedIndex == 1) {
+                    y.options.add(new Option("固定渠道", "0", false, true));  // 默认选中省会城市
+                }
+
+            }
+        </script>
+
     </div>
+
+
+
 </body>
 </html>

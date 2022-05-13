@@ -116,8 +116,8 @@ namespace BarCodePrintSys.Controllers
             {
                 while (id <= num_print)
                 {
-                    sql = "INSERT INTO tbXingWangRuiJiePrint ( s_khlh, s_csdm,s_cgqd,s_nkzz,s_wlbbh,s_amount,s_creator,s_updator,s_createtime,s_updatetime,s_Groupid,s_Roleid,s_waternum,n_state,n_bdprint,s_id,s_cnywm) " +
-                " VALUES('" + s_khlh + "','" + s_csdm + "','" + s_cgqd + "','" + s_nkzz + "','" + s_wlbbh + "','" + s_amount + "','" + creatorid + "'," + "NULL" + ",'" + nowtime + "','" + nowtime + "','" + groupid + "','" + roleid + "','" + num_print + "'," + 0 + "," + ylbd + ",'" + s_id + "','" + s_cnywm + "')";
+                    sql = "INSERT INTO tbXingWangRuiJiePrint ( s_khlh, s_csdm,s_cgqd,s_nkzz,s_wlbbh,s_amount,s_creator,s_updator,s_createtime,s_updatetime,s_Groupid,s_Roleid,s_waternum,n_state,n_bdprint,s_id,s_cnywm,tagType) " +
+                " VALUES('" + s_khlh + "','" + s_csdm + "','" + s_cgqd + "','" + s_nkzz + "','" + s_wlbbh + "','" + s_amount + "','" + creatorid + "'," + "NULL" + ",'" + nowtime + "','" + nowtime + "','" + groupid + "','" + roleid + "','" + num_print + "'," + 0 + "," + ylbd + ",'" + s_id + "','" + s_cnywm + "','" + tagType + "')";
                     //lsary = lsary + "," + lsh;
                     lsary = lsary + "," + s_id;
                     code = DBHelper.excuteNoQuery(sql);
