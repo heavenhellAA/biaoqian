@@ -94,6 +94,8 @@ namespace BarCodePrintSys.Controllers
             string s_wlbbh = Func.Zhuru(Request["s_wlbbh"]);
             string s_amount = Func.Zhuru(Request["s_amount"]);
             string s_id = Func.Zhuru(Request["s_id"]);
+            string tagType = Func.Zhuru(Request["tagType"]);
+            string s_cnywm = Func.Zhuru(Request["s_cnywm"]);
             //string lsh = Getlsnum(DateTime.Now.ToString("yyMM");
             string ylbd = Func.Zhuru(Request["ylbd"]);
             int num_print = int.Parse(Func.Zhuru(Request["num_print"]));
@@ -101,13 +103,8 @@ namespace BarCodePrintSys.Controllers
             string nowtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             string groupid = DBHelper.getuserGroup(creatorid);
             string roleid = Server.HtmlDecode(Request.Cookies["bcp_userInfo"]["RoleID"].ToString());
-            //下面的SQL是不完整的只是单纯检查下SQL注入。
-            /* sql = "Insert Into tbDafangPrint(s_id,s_cnbqywm,s_packageType,s_chrq,s_scrq,s_sl,s_lsh,s_gysdm,s_scph,s_Item2,s_Item5,s_Item3,s_FIFOmsg,s_Itemmsg,s_Lotmsg,s_creator,s_createtime,s_Groupid,s_Roleid,s_waternum,n_state,n_bdprint) ";
-             sql += "values(NEWID(),'" + cnbqywm + "','" + packtype + "','" + chrq + "','" + scrq + "','" + sl + "','" + lsh + "','" + gysdm + "','" + scph + "','" + Item2 + "','" + Item5 + "','" + Item3 + "','" + FIFO + "','" + Item + "','" + lotmsg + "'";
-             sql += ",'" + creatorid + "','" + nowtime + "','" + groupid + "','" + roleid + "','" + id + "'+'/" + num_print + "',0,'" + ylbd + "') ";
-             */
-            sql = "INSERT INTO tbXingWangRuiJiePrint ( s_khlh, s_csdm,s_cgqd,s_nkzz,s_wlbbh,s_amount,s_creator,s_updator,s_createtime,s_updatetime,s_Groupid,s_Roleid,s_waternum,n_state,n_bdprint,s_id) " +
-                " VALUES('" + s_khlh + "','" + s_csdm + "','" + s_cgqd + "','" + s_nkzz + "','" + s_wlbbh + "','" + s_amount + "','" + creatorid + "'," +"NULL"+",'"+ nowtime + "','" + nowtime + "','" + groupid + "','" + roleid + "','" + num_print + "'," + 0 + "," + ylbd + ",'" + s_id + "')";
+            sql = "INSERT INTO tbXingWangRuiJiePrint ( s_khlh, s_csdm,s_cgqd,s_nkzz,s_wlbbh,s_amount,s_creator,s_updator,s_createtime,s_updatetime,s_Groupid,s_Roleid,s_waternum,n_state,n_bdprint,s_id,s_cnywm,tagType) " +
+                " VALUES('" + s_khlh + "','" + s_csdm + "','" + s_cgqd + "','" + s_nkzz + "','" + s_wlbbh + "','" + s_amount + "','" + creatorid + "'," + "NULL" + ",'" + nowtime + "','" + nowtime + "','" + groupid + "','" + roleid + "','" + num_print + "'," + 0 + "," + ylbd + ",'" + s_id + "','" + s_cnywm + "','" + tagType + "')";
             var warndata = sql.IndexOf("warning");
             if (warndata != -1)
             {
@@ -119,9 +116,8 @@ namespace BarCodePrintSys.Controllers
             {
                 while (id <= num_print)
                 {
-                    sql = "INSERT INTO tbXingWangRuiJiePrint ( s_khlh, s_csdm,s_cgqd,s_nkzz,s_wlbbh,s_amount,s_creator,s_updator,s_createtime,s_updatetime,s_Groupid,s_Roleid,s_waternum,n_state,n_bdprint,s_id) " +
-                " VALUES('" + s_khlh + "','" + s_csdm + "','" + s_cgqd + "','" + s_nkzz + "','" + s_wlbbh + "','" + s_amount + "','" + creatorid + "'," + "NULL" + ",'" + nowtime + "','" + nowtime + "','" + groupid + "','" + roleid + "','" + num_print + "'," + 0 + "," + ylbd + ",'" + s_id + "')";
-
+                    sql = "INSERT INTO tbXingWangRuiJiePrint ( s_khlh, s_csdm,s_cgqd,s_nkzz,s_wlbbh,s_amount,s_creator,s_updator,s_createtime,s_updatetime,s_Groupid,s_Roleid,s_waternum,n_state,n_bdprint,s_id,s_cnywm) " +
+                " VALUES('" + s_khlh + "','" + s_csdm + "','" + s_cgqd + "','" + s_nkzz + "','" + s_wlbbh + "','" + s_amount + "','" + creatorid + "'," + "NULL" + ",'" + nowtime + "','" + nowtime + "','" + groupid + "','" + roleid + "','" + num_print + "'," + 0 + "," + ylbd + ",'" + s_id + "','" + s_cnywm + "')";
                     //lsary = lsary + "," + lsh;
                     lsary = lsary + "," + s_id;
                     code = DBHelper.excuteNoQuery(sql);

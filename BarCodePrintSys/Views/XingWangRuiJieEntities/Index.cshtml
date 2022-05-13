@@ -44,15 +44,28 @@
     <!--一维码-->
     <div style="width: 100%; height: 430px; display: none" id="pint">
         <div id="textarea" style="width: 400px; height: 360px; margin-top: 20px; line-height: 25px; margin-left: 50px; text-align: right; display: inline-block;">
+
+            <div style="width: 400px;" class="font">
+                厂内一维码:
+                <input id="cnywm" type="text" onblur="Check();" />
+            </div>
             <div style="width: 400px;" class="font">
                 客户料号:
                 <input id="khlh" type="text" />
             </div>
             <div class="font" style="width: 400px;">
-                采购渠道:
+                标签类型:
                 <select id="tagType" style="width: 203px;">
                     <option value="0">星网锐捷/升腾资讯</option>
                     <option value="1">锐捷网络</option>
+                </select>
+            </div>
+            <div class="font" style="width: 400px;">
+                采购渠道:
+                <select id="cgqd" style="width: 203px;">
+                    <option value="0">锐捷网络</option>
+                    <option value="1">星网锐捷</option>
+                    <option value="2">立泰</option>
                 </select>
             </div>
             <div style="width: 400px;" class="font">
@@ -65,11 +78,11 @@
             </div>
             <div style="width: 400px;" class="font">
                 物料版本号:
-                <input id="wlbbh" type="text" />
+                <input id="wlbbh" type="text" value="1" />
             </div>
             <div style="width: 400px;" class="font">
                 数量:
-                <input id="amount" type="text" />
+                <input id="amount" type="text" onblur="CheckSl()"/>
             </div>
             <div style="width: 400px;" class="font">
                 打印张数:
@@ -87,15 +100,15 @@
         </div>
 
         <!--右侧打印区域-->
-        <div id="PrintArea" style="width: 100mm; height: 30mm; vertical-align: top; display: inline-block; margin-left: 20px; white-space: normal;font-family: SimSun,monospace; ">
+        <div id="PrintArea" style="width: 80mm; height: 30mm; vertical-align: top; display: inline-block; margin-left: 20px; white-space: normal;font-family: SimSun,monospace; ">
             <!--使用表格显示-->
-            <table style="border: thin; width: 98mm; height: 28mm; margin-left: 4px; margin-top: 4px;" rules="rows">
+            <table style="border: thin; width: 78mm; height: 28mm; margin-left: 4px; margin-top: 4px;" rules="rows">
                 <tbody>
                     <tr style="height: 40px;">
-                        <td colspan="3" id="onecode" class="onecode-text" align="center" style="border-right-style: solid;"></td>
+                        <td colspan="3" id="onecode" class="onecode-text" style="border-right-style: solid;"></td>
                     </tr>
-                    <tr  style="height: 20px;border-top-style:hidden;">
-                        <td colspan="3" id="onecode_msg" class="onecode-text" align="center" style="padding-left:10px; border-right-style: solid;"></td>
+                    <tr style="height: 20px;border-top-style:hidden;">
+                        <td colspan="3" id="onecode_msg" class="onecode-text" style="padding-left:10px; border-right-style: solid;"></td>
                     </tr>
                 </tbody>
             </table>
@@ -122,24 +135,61 @@
     <script src="../../Scripts/jquery-barcode-2.0.2.min.js" charset="utf-8"></script>
     <script src="../../Scripts/barcode.js" charset="utf-8"></script>
     <script src="../../Scripts/xybself.js?version=1.1" charset="utf-8"></script>
-    <script>
+    <div>
+        <script>
+        layui.config({
+            version: '1594038786020' //为了更新 js 缓存，可忽略
+        });
+        var tsdiv = '<div style="padding: 10px; line-height: 21px; background-color: #C8C8C8; color: #000; font-weight: 490;">'
+        tsdiv += '<h1>标签打印通用使用方法：</h1>'
+        tsdiv += '<ul style="font-size: 18px;">'
+        tsdiv += '<li>1:鼠标光标移至厂内标签一维码后输入框内,通过USB扫描枪扫描厂内合格证一维码</li>'
+        tsdiv += '<li>2:扫描出一维码信息后鼠标移出输入框任意区域点击即可</li>'
+        tsdiv += '<li>3:系统自动查询出相关信息后，空白没有信息的输入框需要手动输入</li>'
+        tsdiv += '<li>4:遗漏补打,会自动新增一条标记为补打的新记录,不适用于不能断码标签.</li>'
+        tsdiv += '<li>5:破损补打需要选中一条记录,补打完后，该记录会标记为补打状态.</li>'
+        tsdiv += '<li>6:打印失败或者试验打印的记录小批量请自行作废处理</li>'
+        tsdiv += '<li>7:当客户标签存在流水号,若周期和流水号存在于同一字段里,新周期开始使用不会重码</li>'
+        tsdiv += '<li>8:当客户标签存在流水号,且除流水号外无其他变量时，对接使用请联系IT.</li>'
+        tsdiv += '<li>9:请输入进行模糊查询字样，可以输入N位数字模糊查询周期,点击下拉框看到查询结果</li>'
+        tsdiv += '</ul>'
+        tsdiv += '<h1><font color="red">本客户标签特色功能说明：</font></h1>'
+        tsdiv += '<ul style="font-size: 18px;">'
+        tsdiv += '<li>1:一维码标签大小为80*30</li>'
+        tsdiv += '<li>2:客户料号空格已自动补充，非必要禁止更改</li>'
+        tsdiv += '<li>3:周期进行了输入位数判定</li>'
+        tsdiv += '<li>4:</li>'
+        tsdiv += '<li>5:</li>'
+        tsdiv += '<li>6:</li>'
+        tsdiv += '</ul>'
+        tsdiv += '</div>'
+        if (CookieUtil.get("gbk") == 1) {
+        } else {
+            addhowtouse(tsdiv);
+        }
         function Check() {
-            var khlh = document.getElementById("khlh").value;
+            var cnywm = document.getElementById("cnywm").value;
             $.ajax({
                 type: "GET",
                 url: '../Datainself/Getdata',
-                data: { scph: khlh },
+                data: { scph: cnywm },
                 dataType: "json",
                 async: false,  //设置异步，必须先更改对应值才能做后续的传递参数操作
                 success: function (data) {
                     //console.log(data.Tables[0].Rows[0]);
-                    document.getElementById("Item7").value = addPreZero(data.Tables[0].Rows[0].qty, 6);
-                    document.getElementById("Lot2").value = addPreZero(data.Tables[0].Rows[0].number, 15);
-                    document.getElementById("FIFO3").value = new Date(data.Tables[0].Rows[0].datetime_source).format("yyyy-MM-dd").replace('-', '').replace('-', '').substring(2);
+                    document.getElementById("csdm").value = "0394";
+                    //document.getElementById("nkzz").value = "123123";
+                    document.getElementById("wlbbh").value = "1";
+                    document.getElementById("khlh").value = data.Tables[0].Rows[0].customer_goods_id;
+                    var a = new Date(data.Tables[0].Rows[0].datetime_source).format("yyyy");
+                    var b = data.Tables[0].Rows[0].dc.substring(data.Tables[0].Rows[0].dc.length - 2);
+                    document.getElementById("nkzz").value = a + b;
+                    //document.getElementById("amount").value = addPreZero(data.Tables[0].Rows[0].amount, 4);
+                  @* document.getElementById("FIFO3").value = new Date(data.Tables[0].Rows[0].datetime_source).format("yyyy-MM-dd").replace('-', '').replace('-', '').substring(2);
                     var curTime = new Date().format("yyyy/MM/dd"); //因为有xybself.js的方法
                     document.getElementById("FIFO2").value = curTime.replace('/', '').replace('/', '').substring(2);
-                    document.getElementById("Item6").value = curTime.replace('/', '').replace('/', '').substring(2);
-                    lsnum();
+                    document.getElementById("Item6").value = curTime.replace('/', '').replace('/', '').substring(2);*@
+
                 },
                 error: function (res) {
                     console.log(res);
@@ -147,7 +197,16 @@
                 }
             });
         }
-
+            function CheckSl() {
+                var tagType = document.getElementById("tagType").value;
+                var sl = document.getElementById("amount").value;
+                if (tagType == 0) {
+                    document.getElementById("amount").value = addPreZero(sl, 4);
+                }
+                else {
+                    document.getElementById("amount").value = addPreZero(sl, 5);
+                }
+            }
 
         function tongbu(s) {
             var value1 = document.getElementById("FIFO2").value;
@@ -208,10 +267,12 @@
                         { type: 'checkbox', fixed: true }
                         , { field: 'n_id', title: '序号', width: 80, fixed: true }
                         , { field: 's_Id', title: '唯一标识', width: 110, hide: true }
+                        , { field: 's_cnywm', title: '厂内一维码', width: 200 }
                         , { field: 's_khlh', title: '客户料号', width: 160 }
-                        , { field: 's_csdm', title: '厂商代码', width: 200 }
-                        , { field: 's-cgqd', title: '采购渠道', width: 90, templet: function (res) { if (res.s == 's-cgqd') return '锐捷网络'; }, hide: true }
-                        , { field: 's_nkzz', title: '内控追踪码', width: 200 }
+                        , { field: 's_csdm', title: '厂商代码', width: 80 }
+                        , { field: 'tagType', title: '标签类型', width: 30, hide: true }
+                        , { field: 's_cgqd', title: '采购渠道', width: 80 }
+                        , { field: 's_nkzz', title: '内控追踪码', width: 120 }
                         , { field: 's_wlbbh', title: '物料版本号', width: 120 }
                         , { field: 's_amount', title: '数量', width: 150 }
                         , { field: 's_creator', title: '创建人', width: 150 }
@@ -219,7 +280,7 @@
                         , { field: 's_createtime', title: '创建时间', width: 120 }
                         , { field: 's_updatetime', title: '更新时间', width: 100 }
                         , { field: 's_Groupid', title: '分厂', width: 140 }
-                        , { field: 'n_bdprint', title: '补打标记', width: 120 }
+                        , { field: 'n_bdprint', title: '补打标记', width: 80 }
                     ]]
                     , n_id: 'testReload'
                     , page: true
@@ -227,13 +288,13 @@
                 });
             }
             renderTable();
-            //执行一个轮播实例
-            carousel.render({
-                width: '100%' //设置容器宽度
-                , height: 200
-                , arrow: 'none' //不显示箭头
-                , anim: 'fade' //切换动画方式
-            });
+            ////执行一个轮播实例
+            //carousel.render({
+            //    width: '100%' //设置容器宽度
+            //    , height: 200
+            //    , arrow: 'none' //不显示箭头
+            //    , anim: 'fade' //切换动画方式
+            //});
 
             //头工具栏事件
             table.on('toolbar(test)', function (obj) {
@@ -290,23 +351,24 @@
                         return false;// 有空值
                     }
                 }
+                var cnywm = document.getElementById("cnywm").value;//厂内一维码
                 var khlh = document.getElementById("khlh").value;//客户料号
-                var tagType = document.getElementById("tagType").value;//包装类型
+                var tagType = document.getElementById("tagType").value;//标签类型
                 var csdm = document.getElementById("csdm").value;//厂商代码
-                var cgqd = document.getElementById("tagType").value;//采购渠道
+                var cgqd = document.getElementById("cgqd").value;//采购渠道
                 var nkzz = document.getElementById("nkzz").value;//内控追踪
                 var amount = document.getElementById("amount").value;//数量
+                //var amount = document.getElementById("amount").value;//数量
                 var wlbbh = document.getElementById("wlbbh").value;//物料版本号
                 var num_print = document.getElementById("numcount").value;//打印张数
                 if (tagType == 0) {
-                    var YWM = document.getElementById("khlh").value + document.getElementById("csdm").value + document.getElementById("tagType").value + document.getElementById("nkzz").value +
+                    var YWM = document.getElementById("khlh").value + document.getElementById("csdm").value + document.getElementById("cgqd").value + document.getElementById("nkzz").value +
                         document.getElementById("wlbbh").value + document.getElementById("amount").value;
                 }
                 else {
-                    var YWM = document.getElementById("khlh").value + document.getElementById("csdm").value + document.getElementById("tagType").value + document.getElementById("nkzz").value +
+                    var YWM = document.getElementById("khlh").value + document.getElementById("csdm").value + document.getElementById("cgqd").value + document.getElementById("nkzz").value +
                         document.getElementById("amount").value;
                 }
-
                 //数据检查TODO
                 if (!confirm("您确定要打印吗?")) return;
                 //showmsg();
@@ -315,6 +377,7 @@
                     type: "POST",
                     url: "/XingWangRuiJieEntities/AddPrint",
                     data: {
+                        s_cnywm: cnywm,
                         s_khlh: khlh,
                         s_csdm: csdm,
                         s_cgqd: cgqd,
@@ -322,6 +385,7 @@
                         s_wlbbh: wlbbh,
                         s_amount: amount,
                         s_id: YWM,
+                        tagType: tagType,
                         num_print: num_print,
                         ylbd: ylbd,
                     },
@@ -337,7 +401,7 @@
                             var fenye = '<div style="page-break-after:always;"></div>';    //分页
 
                             for (i = 0; i < num1; i++) {
-                                $("#onecode").barcode(YWM, 'code128', { barWidth: 1, barHeight: 30, fontSize: 6, showHRI: false });
+                                $("#onecode").barcode(YWM, 'code128', { barWidth: 1, barHeight: 50, fontSize: 6, showHRI: false });
                                 onecode_msg
                                 $("#onecode_msg").html(YWM);
                                 printData1 += document.getElementById("PrintArea").innerHTML;
@@ -397,14 +461,38 @@
                     });
                 });
             }
+
             //补打打印记录(单个)
             function Bdprint(obj) {
 
                 document.getElementById("numcount").value = 1;//打印张数
-
+                //document.getelementbyid("s_khlh").value = obj.data[0].s_khlh;
+                document.getElementById("khlh").value = obj.data[0].s_khlh;
+                //document.getElementById("tagType").value = obj.data[0].s_cgqd;
+                document.getElementById("csdm").value = obj.data[0].s_csdm;
+                document.getElementById("tagType").value = obj.data[0].s_cgqd;
+                document.getElementById("nkzz").value = obj.data[0].s_nkzz;
+                document.getElementById("amount").value = obj.data[0].s_amount;
+                document.getElementById("wlbbh").value = obj.data[0].s_wlbbh;
+                document.getElementById("cnywm").value = obj.data[0].s_cnywm;
+                //document.getelementbyid("num_print").value = obj.data[0].numcount;
+                //document.getElementById("wlbbh").value = obj.data[0].wlbbh;
                 //showmsg();
                 layer.confirm('确定要补打第' + obj.data[0].n_id + '条记录吗?', { icon: 7, title: '提示' }, function (index) {
-
+                    var khlh = document.getElementById("khlh").value;//客户料号
+                    //var tagType = document.getElementById("tagType").value;//包装类型
+                    var csdm = document.getElementById("csdm").value;//厂商代码
+                    var cgqd = document.getElementById("tagType").value;//采购渠道
+                    var nkzz = document.getElementById("nkzz").value;//内控追踪
+                    var amount = document.getElementById("amount").value;//数量
+                    var wlbbh = document.getElementById("wlbbh").value;//物料版本号
+                    var num_print = document.getElementById("numcount").value;//打印张数
+                    if (cgqd == 0) {
+                        var YWM = khlh + csdm + cgqd + nkzz + wlbbh + amount;
+                    }
+                    else {
+                        var YWM = khlh + csdm + cgqd + nkzz + amount;
+                    }
 
                     //更新补打标记
                     $.ajax({
@@ -421,12 +509,12 @@
                                 var footstr = "</body></html>";
                                 var printData1 = '';
                                 var fenye = '<div style="page-break-after:always;"></div>';    //分页
-
+                                var sid = obj.s_id;
 
                                 for (i = 0; i < num1; i++) {
-                                    $("#Lot_msg").html(Lot);
-                                    $("#onecode_Lot").barcode(Lot, 'code128', { barWidth: 1, barHeight: 26, fontSize: 6, showHRI: false });
-                                    $("#sl_msg").html("Q'ty：" + sl + "PCS");
+                                    $("#onecode").barcode(YWM, 'code128', { barWidth: 1, barHeight: 50, fontSize: 6, showHRI: false });
+                                    onecode_msg
+                                    $("#onecode_msg").html(YWM);
                                     printData1 += document.getElementById("PrintArea").innerHTML;
                                     if (i != num1 - 1) {
                                         printData1 = printData1 + fenye;
@@ -458,14 +546,8 @@
 
             }
 
-
-
         });
-    </script>
-    <script>
-        function myfunction(data) {
-            //var YiweimaString = data.
-        }
-    </script>
+        </script>
+    </div>
 </body>
 </html>
