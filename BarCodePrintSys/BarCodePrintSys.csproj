@@ -479,6 +479,7 @@
     <Content Include="Views\Dafang\Index.cshtml" />
     <Content Include="Views\Haixinsl0412\Index.cshtml" />
     <Content Include="Views\XingWangRuiJieEntities\Index.cshtml" />
+    <Content Include="Views\JingLang\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

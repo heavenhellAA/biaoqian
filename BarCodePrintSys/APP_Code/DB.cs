@@ -21,7 +21,7 @@ namespace BarCodePrintSys
             }
             else if (Machine.GetHostName() == "heavenhell")
             {
-                string cnStr = ConfigurationManager.ConnectionStrings["SEE"].ConnectionString;
+                string cnStr = ConfigurationManager.ConnectionStrings["INF"].ConnectionString;
                 SqlConnection Con = new SqlConnection(cnStr);
                 return Con;
             }
