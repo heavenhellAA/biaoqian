@@ -3,8 +3,8 @@
 //document.getElementById("khlh").value = data.Tables[0].Rows[0].customer_goods_id ;
 //document.getElementById("aslh").value = data.Tables[0].Rows[0].company_materials_id;
 //document.getElementById("sl").value = data.Tables[0].Rows[0].qty;
-//document.getElementById("scph").value = data.Tables[0].Rows[0].number;
-//document.getElementById("fph").value = data.Tables[0].Rows[0].id;
+//document.getElementById("scph").value = data.Tables[0].Rows[0].number;//生产批号
+//document.getElementById("fph").value = data.Tables[0].Rows[0].id;//分批号
 //document.getElementById("zq").value = data.Tables[0].Rows[0].dc;
 //document.getElementById("zx_cpms").value = data.Tables[0].Rows[0].goods_name + ' ' + data.Tables[0].Rows[0].size_id; //+ ' ' + data.Tables[0].Rows[0].terminal
 //data.Tables[0].Rows[0].goods_name + " " + data.Tables[0].Rows[0].size_id +" " + data.Tables[0].Rows[0].parameter(温度系数) + " " + data.Tables[0].Rows[0].terminal + " " + data.Tables[0].Rows[0].sleeve_color(套管颜色) + " " + data.Tables[0].Rows[0].sleeve;

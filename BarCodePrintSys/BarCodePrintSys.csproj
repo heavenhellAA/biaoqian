@@ -151,6 +151,7 @@
     <Compile Include="Controllers\HangjiaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HuihaoController.cs" />
+    <Compile Include="Controllers\JingLangController.cs" />
     <Compile Include="Controllers\JiuzhouController.cs" />
     <Compile Include="Controllers\JsxinanstlController.cs" />
     <Compile Include="Controllers\KangshuController.cs" />
