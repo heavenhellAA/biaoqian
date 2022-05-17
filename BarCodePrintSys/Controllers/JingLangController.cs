@@ -29,23 +29,6 @@ namespace BarCodePrintSys.Controllers
             string data = DBHelper.DatasetToJson(ds);
             return data;
         }
-
-        public string AddPrint()
-        {
-            var code = 0;
-            string lsnum = "";
-            string lsary = "";
-            string sql;
-            int id = 1;
-
-
-            string cnbqywm = Func.Zhuru(Request["cnbqywm"]);
-
-            string lsh = Getlsnum();
-
-            string data = code + "," + lsary;
-            return data;
-        }
         public int Zuofei(string delstr)
         {
             int res = 0;
@@ -74,7 +57,7 @@ namespace BarCodePrintSys.Controllers
             string data = datas.ToString();
             return data;
         }
-        public int UpdatetbJingLangWuLiaoPrint_BD()
+        public int UpdatePrint_BD()
         {
             int code = 0;
             string sql;
@@ -85,7 +68,76 @@ namespace BarCodePrintSys.Controllers
             code = DBHelper.excuteNoQuery(sql);
             return code;
         }
+        public string AddPrint()
+        {
+            var code = 0;
+            string lsnum = "";
+            string lsary = "";
+            string sql;
+            int id = 1;
+
+            string s_id = Request["s_id"];
+            string s_cnbqywm = Request["s_cnbqywm"];
+            string s_gysdm = Request["s_gysdm"];
+            string s_wlbm = Request["s_wlbm"];
+            string s_wlname = Request["s_wlname"];
+            string s_wlgg = Request["s_wlgg"];
+            string DC = Request["DC"];
+            string LtNo = Request["LtNo"];
+            string s_sl = Request["s_sl"];
+            string s_amount = Request["s_amount"];
+            string ylbd = Request["ylbd"];
+
+            //string lsh = Getlsnum();
+            int n_state = 0;
+
+            int num_print = int.Parse(Func.Zhuru(Request["num_print"]));
+            string s_creator = Server.UrlDecode(Request.Cookies["bcp_userInfo"]["UserID"].ToString());
+            string nowtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            string s_Groupid = DBHelper.getuserGroup(s_creator);
+            string s_Roleid = Server.HtmlDecode(Request.Cookies["bcp_userInfo"]["RoleID"].ToString());
+
+            string s_lsh = "";
+
+
+            sql = "Insert Into tbJingLangWuLiaoPrint(s_id,s_cnbqywm,s_gysdm,s_wlbm,s_wlname,s_wlgg,DC,LtNo,s_Groupid,s_Roleid,s_lsh,s_sl,n_state,n_bdprint,s_amount,s_creator,s_updator,s_createtime,s_updatetime)";
+            sql += "values( '"+s_id + "','" + s_cnbqywm + "','" + s_gysdm + "','" + s_wlbm + "','" + s_wlname + "','" + s_wlgg + "','" + DC + "','" + LtNo + "','" + s_Groupid + "','" + s_Roleid + "','" + s_lsh + "','" + s_sl + "','" + n_state + "','" + ylbd + "','" + s_amount + "','" + s_creator + "','" + null + "','" + nowtime + "','" + null + "') ";
+
+            var warndata = sql.IndexOf("warning");
+            if (warndata != -1)
+            {
+                code = -1;
+                string data = code + "," + lsnum;
+                return data;
+            }
+            else
+            {
+                while (id <= num_print)
+                {
+                    s_lsh = Getlsnum();
+                    if (s_lsh.Length == 0)
+                    {
+                        s_lsh = "1";
+                    }
+                    sql = "Insert Into tbJingLangWuLiaoPrint(s_id,s_cnbqywm,s_gysdm,s_wlbm,s_wlname,s_wlgg,DC,LtNo,s_Groupid,s_Roleid,s_lsh,s_sl,n_state,n_bdprint,s_amount,s_creator,s_updator,s_createtime,s_updatetime)";
+                    sql += "values('" + s_id + "','" + s_cnbqywm + "','" + s_gysdm + "','" + s_wlbm + "','" + s_wlname + "','" + s_wlgg + "','" + DC + "','" + LtNo + "','" + s_Groupid + "','" + s_Roleid + "','" + s_lsh + "','" + s_sl + "','" + n_state + "','" + ylbd + "','" + s_amount + "','" + s_creator + "','" + null + "','" + nowtime + "','" + null + "') ";
+
+                    //lsary = lsary + "," + Getlsnum();
+                    code = DBHelper.excuteNoQuery(sql);
+                    if (code == -1)
+                    {
+                        code = 0;
+                    }
+                   
+                    id += 1;
+                }
+
+                string data = code.ToString();
+
+                return data;
+            }
+
+        }
     }
 }
-
 
