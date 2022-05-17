@@ -101,7 +101,7 @@ namespace BarCodePrintSys.Controllers
 
 
             sql = "Insert Into tbJingLangWuLiaoPrint(s_id,s_cnbqywm,s_gysdm,s_wlbm,s_wlname,s_wlgg,DC,LtNo,s_Groupid,s_Roleid,s_lsh,s_sl,n_state,n_bdprint,s_amount,s_creator,s_updator,s_createtime,s_updatetime)";
-            sql += "values( '"+s_id + "','" + s_cnbqywm + "','" + s_gysdm + "','" + s_wlbm + "','" + s_wlname + "','" + s_wlgg + "','" + DC + "','" + LtNo + "','" + s_Groupid + "','" + s_Roleid + "','" + s_lsh + "','" + s_sl + "','" + n_state + "','" + ylbd + "','" + s_amount + "','" + s_creator + "','" + null + "','" + nowtime + "','" + null + "') ";
+            sql += "values( '"+s_id + "','" + s_cnbqywm + "','" + s_gysdm + "','" + s_wlbm + "','" + s_wlname + "','" + s_wlgg + "','" + DC + "','" + LtNo + "','" + s_Groupid + "','" + s_Roleid + "','" + s_lsh + "','" + s_sl + "','" + n_state + "','" + ylbd + "','" + s_amount + "','" + s_creator + "','" + null + "','" + nowtime + "','" + nowtime + "') ";
 
             var warndata = sql.IndexOf("warning");
             if (warndata != -1)
@@ -120,7 +120,7 @@ namespace BarCodePrintSys.Controllers
                         s_lsh = "1";
                     }
                     sql = "Insert Into tbJingLangWuLiaoPrint(s_id,s_cnbqywm,s_gysdm,s_wlbm,s_wlname,s_wlgg,DC,LtNo,s_Groupid,s_Roleid,s_lsh,s_sl,n_state,n_bdprint,s_amount,s_creator,s_updator,s_createtime,s_updatetime)";
-                    sql += "values('" + s_id + "','" + s_cnbqywm + "','" + s_gysdm + "','" + s_wlbm + "','" + s_wlname + "','" + s_wlgg + "','" + DC + "','" + LtNo + "','" + s_Groupid + "','" + s_Roleid + "','" + s_lsh + "','" + s_sl + "','" + n_state + "','" + ylbd + "','" + s_amount + "','" + s_creator + "','" + null + "','" + nowtime + "','" + null + "') ";
+                    sql += "values('" + s_id + "','" + s_cnbqywm + "','" + s_gysdm + "','" + s_wlbm + "','" + s_wlname + "','" + s_wlgg + "','" + DC + "','" + LtNo + "','" + s_Groupid + "','" + s_Roleid + "','" + s_lsh + "','" + s_sl + "','" + n_state + "','" + ylbd + "','" + s_amount + "','" + s_creator + "','" + null + "','" + nowtime + "','" + nowtime + "') ";
 
                     //lsary = lsary + "," + Getlsnum();
                     code = DBHelper.excuteNoQuery(sql);

@@ -126,6 +126,7 @@
     <Compile Include="APP_Code\LayuiHelper.cs" />
     <Compile Include="APP_Code\Machine.cs" />
     <Compile Include="APP_Code\MD5Helper.cs" />
+    <Content Include="APP_Code\Tools\Tools.cs" />
     <Compile Include="App_Start\MemberValidationAttribute.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />

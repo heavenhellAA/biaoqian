@@ -187,11 +187,11 @@
         tsdiv += '</ul>'
         tsdiv += '<h1><font color="red">本客户标签特色功能说明：</font></h1>'
         tsdiv += '<ul style="font-size: 18px;">'
-        tsdiv += '<li>1:标签大小80*60</li>'
-        tsdiv += '<li>2:数量为5位，前导0已自动补充</li>'
+        tsdiv += '<li>1:标签大小80mm*60mm</li>'
+        tsdiv += '<li>2:物料名称为空时自动填充为“铝电解电容器”，请注意核实</li>'
         tsdiv += '<li>3:供应商代码为280001，为固定值，有特殊要求请联系管理员</li>'
         tsdiv += '<li>4:流水号不在前端显示，前端仅显示唯一ID</li>'
-        tsdiv += '<li>5:物料名称为空时自动填充为“铝电解电容器”，请注意核实</li>'
+        //tsdiv += '<li>5:</li>'
         tsdiv += '</ul>'
         tsdiv += '</div>'
         if (CookieUtil.get("gbk") == 1) {
@@ -209,7 +209,7 @@
                 async: false,  //设置异步，必须先更改对应值才能做后续的传递参数操作
                 success: function (data) {
                     //console.log(data.Tables[0].Rows[0]);
-                    document.getElementById("sl").value = addPreZero(data.Tables[0].Rows[0].qty, 5);//数量
+                    document.getElementById("sl").value = data.Tables[0].Rows[0].qty;//数量
                     //document.getElementById("scph").value = data.Tables[0].Rows[0].number;
                     //document.getElementById("ddh").value = data.Tables[0].Rows[0].customer_order_id;
                     document.getElementById("wlgg").value = data.Tables[0].Rows[0].goods_name + ' ' + data.Tables[0].Rows[0].size_id; //+ ' ' + data.Tables[0].Rows[0].terminal//物料规格
