@@ -15,7 +15,7 @@ namespace BarCodePrintSys
             string a = Machine.GetHostName();
             if (Machine.GetHostName() == "xieyongbing")
             {
-                string cnStr = ConfigurationManager.ConnectionStrings["INF"].ConnectionString;
+                string cnStr = ConfigurationManager.ConnectionStrings["SEE"].ConnectionString;
                 SqlConnection Con = new SqlConnection(cnStr);
                 return Con;
             }
