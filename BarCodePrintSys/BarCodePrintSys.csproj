@@ -126,7 +126,7 @@
     <Compile Include="APP_Code\LayuiHelper.cs" />
     <Compile Include="APP_Code\Machine.cs" />
     <Compile Include="APP_Code\MD5Helper.cs" />
-    <Content Include="APP_Code\Tools\Tools.cs" />
+    <Content Include="APP_Code\Tools.cs" />
     <Compile Include="App_Start\MemberValidationAttribute.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -184,6 +184,7 @@
     <Compile Include="Controllers\WeichuangliController.cs" />
     <Compile Include="Controllers\XingWangRuiJieEntitiesController.cs" />
     <Compile Include="Controllers\YaDaController.cs" />
+    <Compile Include="Controllers\YaJingYuanController.cs" />
     <Compile Include="Controllers\YinfeiteController.cs" />
     <Compile Include="Controllers\ZhiyaController.cs" />
     <Compile Include="Controllers\ZhongdaController.cs" />
@@ -482,6 +483,7 @@
     <Content Include="Views\Haixinsl0412\Index.cshtml" />
     <Content Include="Views\XingWangRuiJieEntities\Index.cshtml" />
     <Content Include="Views\JingLang\Index.cshtml" />
+    <Content Include="Views\YaJingYuan\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

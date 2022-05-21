@@ -1,0 +1,823 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>雅晶源客户标签打印</title>
+    <link rel="stylesheet" href="../../Scripts_UI/layui/css/layui.css" media="all">
+    <style>
+        body {
+        }
+
+        .demo-carousel {
+            height: 200px;
+            line-height: 200px;
+            text-align: center;
+        }
+
+        .onecode-text {
+            text-align: left;
+            border: 1px solid #000000;
+            border-left-style: solid;
+            border-right-style: hidden;
+            border-bottom-style: hidden;
+            font-size: 11px;
+        }
+
+
+
+        .bot {
+            border: 0px solid;
+            padding: 5px 25px;
+            font-size: 15px;
+            margin: 5px 20px;
+        }
+
+        .font {
+            font-weight: bold;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div id="layerDemo" style="margin-bottom: 0;">
+        <div class="layui-btn-container" style="display: none;">
+            <button data-method="notice" class="layui-btn">弹出标签使用方法以及更新说明</button>
+        </div>
+    </div>
+
+    <!--外箱标签-->
+    <div style="width: 100%; height: 430px; display: none" id="print_wai">
+        <div id="textarea" style="width: 400px; height: 360px; margin-top: 20px; line-height: 25px; margin-left: 50px; text-align: right; display: inline-block;">
+
+            <div style="width: 400px;" class="font">
+                厂内一维码:
+                <input id="cnbqywm" type="text" onblur="Check(0);" />
+            </div>
+            <div class="font" style="width: 400px;">
+                包装类型:
+                <select id="packageType" disabled>
+                    <option selected="selected" value="0">外箱</option>
+                    <option value="1">最小包装</option>
+                </select>
+            </div>
+            <div style="width: 400px;" class="font">
+                AMC物料编号:
+                <input id="AMCwlNum" type="text" />
+            </div>
+            <div style="width: 400px;" class="font">
+                产品型号/规格:
+                <input id="cpgg" type="text" />
+            </div>
+            <div style="width: 400px;" class="font">
+                AiShi料号:
+                <input id="AiShiCode" type="text" />
+            </div>
+            <div style="width: 400px;" class="font">
+                包装总数量:
+                <input id="bzAmount" type="text" />
+            </div>
+            <div style="width: 400px;" class="font">
+                PO.(订单号):
+                <input id="PoOrder" type="text" />
+            </div>
+            <div style="width: 400px;" class="font">
+                交货日期:
+                <input id="jhDate" type="text" />
+            </div>
+            <div style="width: 400px;" class="font">
+                生产日期/生产批号/周期:
+                <input id="Dc" type="text" />
+                @*<input id="scDate" type="text" />
+                    <input id="scMsg" type="text" />*@
+            </div>
+            <div style="width: 400px;" class="font">
+                每盒生产日期/批号/周期及数量:
+                <input id="mhDc" type="text" />
+                @*<input id="mhAmount" type="text" />
+                    <input id="mhScMsg" type="text" />*@
+            </div>
+
+
+
+            <div style="width: 400px;" class="font">
+                打印张数:
+                <input type="number" id="numcount" oninput="if(value > 999 || value < 1 ){alert('打印张数范围在1到999之间！');value = ''}" />
+            </div>
+            <div style="width: 400px;" class="font">
+                是否为遗漏补打:
+                <label>
+                    <input type="checkbox" name="ylbd" value="1">是
+                </label>
+            </div>
+            <div style="width: 400px; height: 45px; text-align: right;">
+                <button id="Printing_Wai" class="bot" style="border: 5px solid #ffd68c; display: inline-block; background-color: seagreen; color: white;">打印</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!--内箱、最小包装标签-->
+    <div style="width: 100%; height: 430px; display: none" id="print_nei">
+        <div id="textarea" style="width: 400px; height: 360px; margin-top: 20px; line-height: 25px; margin-left: 50px; text-align: right; display: inline-block;">
+
+            <div style="width: 400px;" class="font">
+                厂内一维码:
+                <input id="cnbqywm_s" type="text" onblur="Check(1);" />
+            </div>
+            <div class="font" style="width: 400px;">
+                包装类型:
+                <select id="packageType_s" disabled>
+                    <option selected="selected" value="1">最小包装/内箱</option>
+                </select>
+            </div>
+            <div style="width: 400px;" class="font">
+                AMC物料编号:
+                <input id="AMCwlNum_s" type="text" />
+            </div>
+            <div style="width: 400px;" class="font">
+                产品型号/规格:
+                <input id="cpgg_s" type="text" />
+            </div>
+            <div style="width: 400px;" class="font">
+                AiShi料号:
+                <input id="AiShiCode_s" type="text" />
+            </div>
+            <div style="width: 400px;" class="font">
+                包装总数量:
+                <input id="bzAmount_s" type="text" />
+            </div>
+           
+            <div style="width: 400px;" class="font">
+                生产日期/生产批号/周期:
+                <input id="Dc_s" type="text" />
+                @*<input id="scDate" type="text" />
+                    <input id="scMsg" type="text" />*@
+            </div>
+
+            <div style="width: 400px;" class="font">
+                打印张数:
+                <input type="number" id="numcount" oninput="if(value > 999 || value < 1 ){alert('打印张数范围在1到999之间！');value = ''}" />
+            </div>
+            <div style="width: 400px;" class="font">
+                是否为遗漏补打:
+                <label>
+                    <input type="checkbox" name="ylbd" value="1">是
+                </label>
+            </div>
+            <div style="width: 400px; height: 45px; text-align: right;">
+                <button id="Printing_Nei" class="bot" style="border: 5px solid #ffd68c; display: inline-block; background-color: seagreen; color: white;">打印</button>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!-- layui 打印记录表-->
+    <table id="demo" lay-filter="test"></table>
+
+    <div class="layui-tab layui-tab-brief" lay-filter="demo">
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+
+                <div class="layui-carousel" id="test1">
+                    <div carousel-item>
+                        <div>
+                            <p class="layui-bg-green demo-carousel">本后台系统UI为layui！</p>
+                        </div>
+                        <div>
+                            <p class="layui-bg-red demo-carousel">本系统不适用谷歌浏览器请勿用谷歌浏览器进行标签打印</p>
+                        </div>
+                        <div>
+                            <p class="layui-bg-blue demo-carousel">有任何使用上的问题即时反馈</p>
+                        </div>
+                        <div>
+                            <p class="layui-bg-orange demo-carousel">后续功能正在增加完善中</p>
+                        </div>
+                        <div>
+                            <p class="layui-bg-cyan demo-carousel">多沟通！多沟通！多沟通！重要的事情说三遍</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script type="text/html" id="toolbarGroup">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm layui-icon" lay-event="zfei">&#x1007;作废</button>
+            <button class="layui-btn layui-btn-sm layui-icon" lay-event="print_wai">&#xe66d;雅晶源外箱标签打印</button>
+            <button class="layui-btn layui-btn-sm layui-icon" lay-event="print_nei">&#xe66d;雅晶源最小包装标签打印</button>
+            <button class="layui-btn layui-btn-sm layui-icon" lay-event="print_bd">&#xe66d;破损补打</button>
+            <button class="layui-btn layui-btn-sm layui-icon" lay-event="flush">&#xe669;刷新</button>
+            <button class="layui-btn layui-btn-sm layui-icon" lay-event="readhowtouse">&#xe702;帮助说明</button>
+        </div>
+    </script>
+
+    <script src="../../Scripts_UI/layui/layui.all.js" charset="utf-8"></script>
+    <script src="../../Scripts/jquery-2.1.1.min.js" charset="utf-8"></script>
+    <script src="../../Scripts/jquery-barcode-2.0.2.min.js" charset="utf-8"></script>
+    <script src="../../Scripts/barcode.js" charset="utf-8"></script>
+    <script src="../../Scripts/xybself.js?version=1.1" charset="utf-8"></script>
+
+    <script>
+        layui.config({
+            version: '1594038786020' //为了更新 js 缓存，可忽略
+        });
+        var tsdiv = '<div style="padding: 10px; line-height: 21px; background-color: #C8C8C8; color: #000; font-weight: 490;">'
+        tsdiv += '<h1>标签打印通用使用方法：</h1>'
+        tsdiv += '<ul style="font-size: 18px;">'
+        tsdiv += '<li>1:鼠标光标移至厂内标签一维码后输入框内,通过USB扫描枪扫描厂内合格证一维码</li>'
+        tsdiv += '<li>2:扫描出一维码信息后鼠标移出输入框任意区域点击即可</li>'
+        tsdiv += '<li>3:系统自动查询出相关信息后，空白没有信息的输入框需要手动输入</li>'
+        tsdiv += '<li>4:遗漏补打,会自动新增一条标记为补打的新记录,不适用于不能断码标签.</li>'
+        tsdiv += '<li>5:破损补打需要选中一条记录,补打完后，该记录会标记为补打状态.</li>'
+        tsdiv += '<li>6:打印失败或者试验打印的记录小批量请自行作废处理</li>'
+        tsdiv += '<li>7:当客户标签存在流水号,若周期和流水号存在于同一字段里,新周期开始使用不会重码</li>'
+        tsdiv += '<li>8:当客户标签存在流水号,且除流水号外无其他变量时，对接使用请联系IT.</li>'
+        tsdiv += '<li>9:请输入进行模糊查询字样，可以输入N位数字模糊查询周期,点击下拉框看到查询结果</li>'
+        tsdiv += '</ul>'
+        tsdiv += '<h1><font color="red">本客户标签特色功能说明：</font></h1>'
+        tsdiv += '<ul style="font-size: 18px;">'
+        tsdiv += '<li>1:标签大小为100*50</li>'
+        tsdiv += '<li>2:流水码中为当天当前打印日期+供应商代码(1211)+流水号</li>'
+        tsdiv += '<li>3:流水号内外箱一起循环根据打印日期循环</li>'
+        tsdiv += '<li>4:</li>'
+        tsdiv += '<li>5:</li>'
+        tsdiv += '<li>6:</li>'
+        tsdiv += '</ul>'
+        tsdiv += '</div>'
+        if (CookieUtil.get("gbk") == 1) {
+        } else {
+            addhowtouse(tsdiv);
+        }
+        function Check(i) {
+            if (i == 0) {
+                var cnbqywm = document.getElementById("cnbqywm").value;
+            }
+            else {
+                var cnbqywm = document.getElementById("cnbqywm_s").value;
+            }
+            //var packageType = document.getElementById("packageType").value;
+            $.ajax({
+                type: "GET",
+                url: '../Datainself/Getdata',
+                data: { scph: cnbqywm },
+                dataType: "json",
+                async: false,  //设置异步，必须先更改对应值才能做后续的传递参数操作
+                success: function (data) {
+                    //console.log(data.Tables[0].Rows[0]);
+                    if (i == 0) {
+                        //外箱
+                        //amc物料编号
+                        document.getElementById("AMCwlNum").value = data.Tables[0].Rows[0].customer_goods_id;//物料编码
+                        //产品型号/规格/sishi料号
+                        document.getElementById("cpgg").value = data.Tables[0].Rows[0].goods_name + ' ' + data.Tables[0].Rows[0].size_id; //+ ' ' + data.Tables[0].Rows[0].terminal//物料规格
+                        document.getElementById("AiShiCode").value = data.Tables[0].Rows[0].company_materials_id;
+                        //包装总数量
+                        document.getElementById("bzAmount").value = data.Tables[0].Rows[0].qty;
+                        //PO.
+                        document.getElementById("PoOrder").value = data.Tables[0].Rows[0].customer_order_id;
+                        //交货日期
+                        //todo
+                        document.getElementById("jhDate").value = new Date(Date.now()).format("yyyy-MM-dd");
+                        //生产日期/生产批次/周期
+                        document.getElementById("Dc").value = data.Tables[0].Rows[0].dc;
+                        //每盒生产日期/批次/周期及数量
+                        document.getElementById("mhDc").value = data.Tables[0].Rows[0].dc;
+                    }
+                    else {
+                        //内箱/最小包装
+                        //amc物料编号
+                        document.getElementById("AMCwlNum_s").value = data.Tables[0].Rows[0].customer_goods_id;//物料编码
+                        //产品型号/规格/aishi料号
+                        document.getElementById("cpgg_s").value = data.Tables[0].Rows[0].goods_name + ' ' + data.Tables[0].Rows[0].size_id; //+ ' ' + data.Tables[0].Rows[0].terminal//物料规格
+                        document.getElementById("AiShiCode_s").value = data.Tables[0].Rows[0].company_materials_id;
+                        //生产日期/生产批号/周期
+                        document.getElementById("Dc_s").value = data.Tables[0].Rows[0].dc;
+
+                        //包装数量
+                        document.getElementById("bzAmount_s").value = data.Tables[0].Rows[0].qty;
+
+                    }
+                },
+                error: function (res) {
+                    console.log(res);
+                    layer.msg('查询出错或者无数据！', { icon: 0 });
+                }
+            });
+        }
+
+        ////流水号根据打印日期自动增长
+        function lsnum(dyrq) {
+            $.ajax({
+                type: "GET",
+                url: '../YaJingYuan/Getlsnum',
+                data: { dyrq: dyrq },
+                dataType: "text",
+                success: function (data) {
+                    $("#lsh").val(data);
+                },
+                error: function (res) {
+                    console.log(res);
+                }
+            });
+        }
+        ////流水号根据打印日期自动增长
+        function lsnumzx(dyrq) {
+            $.ajax({
+                type: "GET",
+                url: '../YaJingYuan/Getlsnum',
+                data: { dyrq: dyrq },
+                dataType: "text",
+                success: function (data) {
+                    $("#zx_lsh").val(data);
+                },
+                error: function (res) {
+                    console.log(res);
+                }
+            });
+        }
+        //显示信息
+        //未使用
+        //function showmsg() {
+        //    var wlmc = document.getElementById("wlmc").value;//物料名称
+        //    var khlh = document.getElementById("khlh").value;//客户料号
+        //    var gys = document.getElementById("gys").value;//供应商
+        //    var cgdd = document.getElementById("cgdd").value;//采购订单
+        //    var cgjh = document.getElementById("cgjh").value;//采购计划
+        //    var sl = document.getElementById("sl").value;//数量
+        //    var scrq = document.getElementById("scrq").value;//生产日期
+
+        //    $("#onecode_khlh").barcode(khlh, 'code128', { barWidth: 1, barHeight: 18, fontSize: 6, showHRI: false });
+        //    $("#onecode_sl").barcode(sl, 'code128', { barWidth: 1, barHeight: 18, fontSize: 6, showHRI: false });
+
+        //    $("#wlmc_msg").html('<span>(P)Name:</span>' + wlmc);
+        //    $("#khlh_msg").html('<span>(P)P/N:</span>' + khlh);
+        //    $("#gys_msg").html('<span>供应商:</span>' + gys);
+        //    $("#cgdd_msg").html('<span>采购订单:</span>' + cgdd);
+        //    $("#cgjh_msg").html('<span>采购计划:</span>' + cgjh);
+        //    $("#sl_msg").html('<span>数量:</span>' + sl);
+        //    $("#scrq2_msg").html('<span>生产日期:</span>' + scrq);
+        //}
+
+        //function showmsgZX() {
+        //    var wlmc = document.getElementById("zx_wlmc").value;//物料名称
+        //    var khlh = document.getElementById("zx_khlh").value;//客户料号
+        //    var scpc = document.getElementById("zx_scpc").value;//生产批次
+        //    var sl = document.getElementById("zx_sl").value;//数量
+        //    var scrq = document.getElementById("zx_scrq").value;//生产日期
+
+        //    $("#zx_onecode_khlh").barcode(khlh, 'code128', { barWidth: 1, barHeight: 22, fontSize: 6, showHRI: false });
+        //    $("#zx_onecode_sl").barcode(sl, 'code128', { barWidth: 1, barHeight: 22, fontSize: 6, showHRI: false });
+
+        //    $("#zx_wlmc_msg").html('<span>(P)Name:</span>' + wlmc);
+        //    $("#zx_khlh_msg").html('<span>(P)P/N:</span>' + khlh);
+        //    $("#zx_scrq_msg").html('<span>(12D)DataCode:</span>' + scrq);
+        //    $("#zx_scpc_msg").html('<span>(1T)LOT No:</span>' + scpc);
+        //    $("#zx_sl_msg").html('<span>数量:</span>' + sl);
+        //    $("#zx_scrq2_msg").html('<span>生产日期:</span>' + scrq);
+        //}
+
+
+
+        layui.use(['laypage', 'layer', 'table', 'carousel', 'upload', 'element'], function () {
+            var laydate =
+                laypage = layui.laypage //分页
+                , layer = layui.layer //弹层
+                , table = layui.table //表格
+                //, carousel = layui.carousel //轮播
+                , element = layui.element //元素操作
+                , form = layui.form //表单
+
+
+            //向世界问个好
+            layer.msg('欢迎使用艾华集团标签打印系统');
+
+            //监听Tab切换
+            element.on('tab(demo)', function (data) {
+                layer.tips('切换了 ' + data.index + '：' + this.innerHTML, this, {
+                    tips: 1
+                });
+            });
+            //执行一个 table 实例
+            var renderTable = function () {
+                table.render({
+                    elem: '#demo'
+                    , url: '../YaJingYuan/searchprint'
+                    //, where: { n_state: document.getElementById("demoReload").value }
+                    , filter: true
+                    , sort: true
+                    , colFilterRecord: true
+                    , toolbar: '#toolbarGroup' //指向自定义工具栏模板选择器
+                    , title: '深圳雅晶源标签打印记录表'
+                    , response: {
+                        statusName: 'code' //规定数据状态的字段名称，默认：code
+                        , statusCode: 200 //规定成功的状态码，默认：0
+                    }
+                    , parseData: function (res) { //res 即为原始返回的数据
+                        return {
+                            "code": res.Tables[0].Code, //解析接口状态s
+                            "data": res.Tables[0].Rows, //解析数据列表
+                            "msg": res.Tables[0].Name, //解析提示文本
+                            "count": res.Tables[1].Rows[0].zongshu, //解析数据长度
+                        };
+                    }
+                    , cols: [[ //表头
+                        { type: 'checkbox', fixed: true }
+                        , { field: 'n_id', title: '序号', width: 80, fixed: true }
+                        , { field: 's_id', title: '唯一标识', width: 110, hide: true }
+                        , { field: 's_cnbqywm', title: '厂内标签一维码', width: 170 }
+                        , { field: 's_packageType', title: '包装类型', width: 140, templet: function (res) { if (res.s_packageType == '0') return '外箱'; else if (res.s_packageType == '1') return '最小包装/内箱'; } }
+                        , { field: 's_AMCwlNum', title: 'AMC物料编号', width: 225 }
+                        , { field: 's_cpgg', title: '产品型号/规格', width: 180 }
+                        , { field: 's_bzAmount', title: '包装总数量', width: 100 }
+                        , { field: 's_PoOrder', title: 'PO.(订单号)', width: 120 }
+                        , { field: 's_jhDate', title: '交货日期', width: 120 }
+                        , { field: 's_scMsg', title: '生产日期/生产批号/周期', width: 200 }
+                        , { field: 's_Dc', title: '周期', width: 150 }
+                        , { field: 's_mhDc', title: '每盒周期', width: 150 }
+                        , { field: 'EWMmsg', title: '二维码信息', width: 120 }
+                        , { field: 's_waternum', title: '流水号', width: 100 }
+                        , { field: 's_UserName', title: '创建人', width: 120 }
+                        , { field: 's_createtime', title: '创建时间', width: 160 }
+                        , { field: 's_GroupName', title: '分厂', width: 140 }
+                        , { field: 'n_bdprint', title: '补打标记', width: 120 }
+                        , { field: 's_RoleName', title: '权限级别', width: 160, hide: true }
+                    ]]
+                    , n_id: 'testReload'
+                    , page: true
+                    , limits: [10, 50, 100, 500, 1000, 5000, 10000]
+                });
+            }
+            renderTable();
+
+            //头工具栏事件
+            table.on('toolbar(test)', function (obj) {
+                var checkStatus = table.checkStatus(obj.config.id);
+                switch (obj.event) {
+                    case 'zfei':
+                        if (checkStatus.data.length > 0) {
+                            Zuofei(checkStatus);
+                        } else {
+                            layer.msg('请选择需要作废的打印记录', { icon: 0 });
+                        }
+                        break;
+                    case 'print_wai':
+                        document.getElementById("print_wai").setAttribute("style", "display:block;");
+                        break;
+                    case 'print_nei':
+                        document.getElementById("print_nei").setAttribute("style", "display:block;");
+                        break;
+                    case 'print_bd':
+                        //document.getElementById("Printing").setAttribute("style", "display:none;");
+                        //document.getElementById("n_Printing").setAttribute("style", "display:none;");
+                        if (checkStatus.data.length > 0 && checkStatus.data.length == 1) {
+                            Bdprint(checkStatus);
+                        }
+                        else {
+                            layer.msg('请选中需要补打的条码记录，补打功能只支持单条打印！', { icon: 0 });
+                        }
+                        break;
+                    case 'flush':
+                        renderTable();
+                        break;
+                    case 'readhowtouse':
+                        addhowtouse(tsdiv);
+                        break;
+                };
+            });
+
+            //深圳雅晶源外箱打印事件
+            $("#Printing_Wai").click(function () {
+                var str = document.getElementsByName('ylbd');
+                var ylbd = 0;
+                if (str[0].checked == true) {
+                    ylbd = str[0].value;
+                }
+                var x = document.getElementById("textarea").getElementsByTagName("input");
+                //填写信息是否完整
+                for (var i = 0; i < x.length; i++) {
+                    if (x[i].value == "") {
+                        alert('信息未填写完整');
+                        x[i].focus();
+                        return false;// 有空值
+                    }
+                }
+                var cnbqywm = document.getElementById("cnbqywm").value;//厂内标签一维码
+                var packageType = document.getElementById("packageType").value;//包装类型
+                var AMCwlNum = document.getElementById("AMCwlNum").value;
+                var cpgg = document.getElementById("cpgg").value;
+                var AiShiCode = document.getElementById("AiShiCode").value;
+                var bzAmount = document.getElementById("bzAmount").value;
+                var PoOrder = document.getElementById("PoOrder").value;
+                var jhDate = document.getElementById("jhDate").value;
+                var scDate = new Date(Date.now()).format("yyyy-MM-dd");//todo
+                var scNum = bzAmount;//todo
+                var Dc = document.getElementById("Dc").value;
+                var mhDc = document.getElementById("mhDc").value;
+                //var scNum = document.getElementById("scNum").value;
+                var scMsg = scDate + "-" + Dc + "-" + scNum;
+                var num_print = document.getElementById("numcount").value;//打印张数
+
+                var EWM_Wai = AMCwlNum + "&" + "AiSHi" + AiShiCode + "&" + Dc + "&" + bzAmount + "&" + PoOrder;
+
+                if (!confirm("您确定要打印吗?")) return;
+                //showmsg();
+                //添加打印数据数据
+                $.ajax({
+                    type: "POST",
+                    url: "/YaJingYuan/AddYaJingYuanPrint",
+                    data: {
+                        s_cnbqywm: cnbqywm,
+                        s_packageType: packageType,
+                        s_AMCwlNum: AMCwlNum,
+                        s_cpgg: cpgg,
+                        s_cpgg: AiShiCode,
+                        s_bzAmount: bzAmount,
+                        s_PoOrder: PoOrder,
+                        s_jhDate: jhDate,
+                        s_scDate: scDate,
+                        s_scNum: scNum,
+                        s_Dc: Dc,
+                        s_mhDc: mhDc,
+                        s_scMsg: scMsg,
+                        EWMmsg: EWM_Wai,
+                        n_bdprint: ylbd,
+                        num_print: num_print,
+                        ylbd: ylbd
+                    },
+                    dataType: "text",
+                    success: function (data) {
+                        var str = data.substring(3);
+                        var arr = str.split(',');
+                        if (data.substring(0, 1) > 0) {
+                            var num1 = $("#numcount").val();
+                            var headstr = "<html><body>";
+                            var footstr = "</body></html>";
+                            var printData1 = '';
+                            var fenye = '<div style="page-break-after:always;"></div>';    //分页
+
+
+                            for (i = 0; i < num1; i++) {
+                                lsh = arr[i];//流水号
+                                $("#lsm_msg").html('<span>(S)S/N:</span>' + dyrq + gysdm + lsh);
+                                //$('#qrcode').html('');
+                                $("#onecode_lsm").barcode(dyrq + gysdm + lsh, 'code128', { barWidth: 1, barHeight: 18, fontSize: 6, showHRI: false });
+
+                                printData1 += document.getElementById("PrintArea").innerHTML;
+                                if (i != num1 - 1) {
+                                    printData1 = printData1 + fenye;
+                                }
+                            }
+
+                            var printData = printData1;// 获得 div 里的所有 html 数据
+                            document.body.innerHTML = headstr + printData + footstr;
+
+                            // 二维码  一维码 可能是太长了 必须等待 要不然打印出来没有二维码
+                            window.setTimeout(function () {
+                                location.href = location.href;  //返回主界面
+                                window.print();
+                            }, 3000);
+
+                        } else if (data.substring(0, 2) == -1) {
+                            alert("请不要输入非法字符,如果属于必输内容，请联系IT！");
+                        } else {
+                            alert("500,打印记录生成失败，本次打印终止。");
+                        }
+                    },
+                    error: function (data) {
+                        alert("501,打印记录生成失败，本次打印终止。");
+                    }
+                })
+
+            })
+
+  
+            //作废打印记录(多选)
+            function Zuofei(obj) {
+                var str = "";
+                var msg = "";
+                var l = obj.data.length;
+                for (var i = 0; i < l; i++) {
+                    str += "'" + obj.data[i].n_id + "',";
+                }
+                layer.confirm('确定要作废' + l + '条记录吗?', { icon: 2, title: '提示' }, function (index) {
+                    layui.jquery.ajax({
+                        type: "POST",
+                        url: '../YaJingYuan/Zuofei',
+                        data: { delstr: str },
+                        dataType: "JSON",
+                        success: function (res) {
+                            if (res > 0) {
+                                var msg = "成功作废" + res + "条记录！";
+                                layer.msg(msg, { icon: 6, time: 1000 }, function () {
+                                    layer.close(index);
+                                    renderTable();
+                                });
+                            }
+                            else {
+                                layer.msg("作废失败", { icon: 5 });
+                            }
+                        }
+                    });
+                });
+            }
+
+            //补打打印记录(单个)
+            function Bdprint(obj) {
+                if (obj.data[0].s_packageType == 0) {
+                    document.getElementById("print_wai").setAttribute("style", "display:block;");
+
+                    document.getElementById("cnbqywm").value = obj.data[0].s_cnbqywm;//厂内标签一维码
+                    document.getElementById("packageType").value = obj.data[0].s_packageType;//包装类型
+                    document.getElementById("dyrq").value = obj.data[0].s_dyrq;//打印日期
+                    document.getElementById("gysdm").value = obj.data[0].s_gysdm;//供应商代码
+                    document.getElementById("lsh").value = obj.data[0].s_lsh;//流水号
+                    document.getElementById("wlmc").value = obj.data[0].s_wlmc;//物料名称
+                    document.getElementById("khlh").value = obj.data[0].s_khlh;//客户料号
+                    document.getElementById("gys").value = obj.data[0].s_gys;//供应商
+                    document.getElementById("cgdd").value = obj.data[0].s_cgdd;//采购订单
+                    document.getElementById("cgjh").value = obj.data[0].s_cgjh;//采购计划
+                    document.getElementById("sl").value = obj.data[0].s_sl;//数量
+                    document.getElementById("scrq").value = obj.data[0].s_scrq;//生产日期
+                    document.getElementById("numcount").value = 1;//打印张数
+
+                    showmsg();
+                    layer.confirm('确定要补打第' + obj.data[0].n_id + '条记录吗?', { icon: 7, title: '提示' }, function (index) {
+                        var cnbqywm = document.getElementById("cnbqywm").value;//厂内标签一维码
+                        var packageType = document.getElementById("packageType").value;//包装类型
+                        var dyrq = document.getElementById("dyrq").value;//打印日期
+                        var gysdm = document.getElementById("gysdm").value;//供应商代码
+                        var lsh = document.getElementById("lsh").value;//流水号
+                        var wlmc = document.getElementById("wlmc").value;//物料名称
+                        var khlh = document.getElementById("khlh").value;//客户料号
+                        var gys = document.getElementById("gys").value;//供应商
+                        var cgdd = document.getElementById("cgdd").value;//采购订单
+                        var cgjh = document.getElementById("cgjh").value;//采购计划
+                        var sl = document.getElementById("sl").value;//数量
+                        var scrq = document.getElementById("scrq").value;//生产日期
+                        var num_print = document.getElementById("numcount").value;//打印张数
+
+
+                        //更新补打标记
+                        $.ajax({
+                            type: "POST",
+                            url: "/YaJingYuan/UpdatetbYaJingYuanPrint_BD",
+                            data: {
+                                id: obj.data[0].n_id
+                            },
+
+                            success: function (data) {
+                                if (data > 0) {
+                                    var num1 = $("#numcount").val();
+                                    var headstr = "<html><body>";
+                                    var footstr = "</body></html>";
+                                    var printData1 = '';
+                                    var fenye = '<div style="page-break-after:always;"></div>';    //分页
+
+
+                                    for (i = 0; i < num1; i++) {
+                                        $("#lsm_msg").html('<span>(S)S/N:</span>' + dyrq + gysdm + lsh);
+                                        //$('#qrcode').html('');
+                                        $("#onecode_lsm").barcode(dyrq + gysdm + lsh, 'code128', { barWidth: 1, barHeight: 18, fontSize: 6, showHRI: false });
+
+                                        printData1 += document.getElementById("PrintArea").innerHTML;
+                                        if (i != num1 - 1) {
+                                            printData1 = printData1 + fenye;
+                                        }
+                                    }
+
+                                    var printData = printData1;// 获得 div 里的所有 html 数据
+                                    document.body.innerHTML = headstr + printData + footstr;
+
+                                    // 二维码  一维码 可能是太长了 必须等待 要不然打印出来没有二维码
+                                    window.setTimeout(function () {
+                                        location.href = location.href;  //返回主界面
+                                        window.print();
+                                    }, 3000);
+
+                                } else if (data == -1) {
+                                    alert("请不要输入非法字符,如果属于必输内容，请联系IT！");
+                                } else {
+                                    alert("500,打印记录生成失败，本次打印终止。");
+                                }
+                            },
+                            error: function (data) {
+                                alert("501,打印记录生成失败，本次打印终止。");
+                            }
+                        })
+
+                    })
+                } else {
+                    document.getElementById("pint_nei").setAttribute("style", "display:block;");
+
+                    document.getElementById("zx_cnbqywm").value = obj.data[0].s_cnbqywm;//厂内标签一维码
+                    document.getElementById("zx_packageType").value = obj.data[0].s_packageType;//包装类型
+                    document.getElementById("zx_dyrq").value = obj.data[0].s_dyrq;//打印日期
+                    document.getElementById("zx_gysdm").value = obj.data[0].s_gysdm;//供应商代码
+                    document.getElementById("zx_lsh").value = obj.data[0].s_lsh;//流水号
+                    document.getElementById("zx_wlmc").value = obj.data[0].s_wlmc;//物料名称
+                    document.getElementById("zx_khlh").value = obj.data[0].s_khlh;//客户料号
+                    document.getElementById("zx_scpc").value = obj.data[0].s_scpc;//生产批次
+                    document.getElementById("zx_sl").value = obj.data[0].s_sl;//数量
+                    document.getElementById("zx_scrq").value = obj.data[0].s_scrq;//生产日期
+                    document.getElementById("zx_numcount").value = 1;//打印张数
+
+                    showmsgZX();
+                    layer.confirm('确定要补打第' + obj.data[0].n_id + '条记录吗?', { icon: 7, title: '提示' }, function (index) {
+                        var cnbqywm = document.getElementById("zx_cnbqywm").value;//厂内标签一维码
+                        var packageType = document.getElementById("zx_packageType").value;//包装类型
+                        var dyrq = document.getElementById("zx_dyrq").value;//打印日期
+                        var gysdm = document.getElementById("zx_gysdm").value;//供应商代码
+                        var lsh = document.getElementById("zx_lsh").value;//流水号
+                        var wlmc = document.getElementById("zx_wlmc").value;//物料名称
+                        var khlh = document.getElementById("zx_khlh").value;//客户料号
+                        var scpc = document.getElementById("zx_scpc").value;//生产批次
+                        var sl = document.getElementById("zx_sl").value;//数量
+                        var scrq = document.getElementById("zx_scrq").value;//生产日期
+                        var num_print = document.getElementById("zx_numcount").value;//打印张数
+
+
+
+                        //更新补打标记
+                        $.ajax({
+                            type: "POST",
+                            url: "/YaJingYuan/UpdatetbYaJingYuanPrint_BD",
+                            data: {
+                                id: obj.data[0].n_id
+                            },
+
+                            success: function (data) {
+                                if (data > 0) {
+                                    var num1 = $("#zx_numcount").val();
+                                    var headstr = "<html><body>";
+                                    var footstr = "</body></html>";
+                                    var printData1 = '';
+                                    var fenye = '<div style="page-break-after:always;"></div>';    //分页
+
+
+                                    for (i = 0; i < num1; i++) {
+                                        $("#zx_lsm_msg").html('<span>(S)S/N:</span>' + dyrq + gysdm + lsh);
+                                        //$('#qrcode').html('');
+                                        $("#zx_onecode_lsm").barcode(dyrq + gysdm + lsh, 'code128', { barWidth: 1, barHeight: 18, fontSize: 6, showHRI: false });
+                                        $('#zx_qrcode').html('');
+                                        //二维码规则
+                                        QRCodes = "S" + dyrq + gysdm + lsh + ",M" + khlh + ",Q" + sl + ",D" + scrq + ",L" + scpc + ",T" + scrq;
+                                        qrcode = new QRCode(document.getElementById("zx_qrcode"), {
+                                            text: QRCodes,
+                                            width: 80, //设置宽高
+                                            height: 80,
+                                            correctLevel: 1,
+
+                                        });
+                                        //能抓到第一个【0】的canvas转成IMG IMG 但是格式不对
+
+                                        var img = $("#zx_qrcode").find("canvas")[0].toDataURL("image/png");
+                                        $("#zx_qrcode").find("canvas").attr('style', 'display:none');
+                                        $("#zx_qrcode").find("img").attr('src', img);
+                                        $("#zx_qrcode").find("img").attr('style', 'display:block');
+
+
+                                        printData1 += document.getElementById("zx_PrintArea").innerHTML;
+                                        if (i != num1 - 1) {
+                                            printData1 = printData1 + fenye;
+                                        }
+                                    }
+
+                                    var printData = printData1;// 获得 div 里的所有 html 数据
+                                    document.body.innerHTML = headstr + printData + footstr;
+
+                                    // 二维码  一维码 可能是太长了 必须等待 要不然打印出来没有二维码
+                                    window.setTimeout(function () {
+                                        location.href = location.href;  //返回主界面
+                                        window.print();
+                                    }, 3000);
+
+                                } else if (data == -1) {
+                                    alert("请不要输入非法字符,如果属于必输内容，请联系IT！");
+                                } else {
+                                    alert("500,打印记录生成失败，本次打印终止。");
+                                }
+                            },
+                            error: function (data) {
+                                alert("501,打印记录生成失败，本次打印终止。");
+                            }
+                        })
+
+                    })
+                }
+
+            }
+
+
+
+
+        });
+    </script>
+</body>
+</html>

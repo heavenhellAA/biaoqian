@@ -2,9 +2,9 @@
 using System;
 using System.Data;
 
-namespace BarCodePrintSys.APP_Code.Tools
+namespace BarCodePrintSys
 {
-    public class Tools
+   public class Tools
     {
         /// <summary>
         /// 流水号生成工具
@@ -14,7 +14,7 @@ namespace BarCodePrintSys.APP_Code.Tools
         /// <param name="num">当批次总数</param>
         /// <param name="columnName">序列字段名称</param>
         /// <returns></returns>
-        public string LiushuiTool(int i, string tableName, int num, string columnName)
+        public static string LiushuiTool(int i, string tableName, int num, string columnName)
         {
             //流水规则：3位 批次数量 3位 在批次中的序列流水号 5位在库中的序列号
             // 批次数量：本次打印的张数
