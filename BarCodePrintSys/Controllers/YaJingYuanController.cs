@@ -105,5 +105,80 @@ namespace BarCodePrintSys.Controllers
                 return data;
             }
         }
+        public string AddYaJingYuanNeiPrint()
+        {
+            var code = 0;
+            string lsnum = "";
+            string lsary = "";
+            string sql;
+            int id = 1;
+
+            var n_state = "0";
+            var s_cnbqywm = Request["s_cnbqywm"];
+            var s_packageType = Request["s_packageType"];
+            var s_AMCwlNum = Request["s_AMCwlNum"];
+            var s_cpgg = Request["s_cpgg"];
+            var s_bzAmount = Request["s_bzAmount"];
+            var s_PoOrder = Request["s_PoOrder"];
+            var s_jhDate = Request["s_jhDate"];
+            var s_scDate = Request["s_scDate"];
+            var s_scNum = Request["s_scNum"];
+            var s_Dc = Request["s_Dc"];
+            var s_mhDc = Request["s_mhDc"];
+            var s_scMsg = Request["s_scMsg"];
+            var EWMmsg = Request["EWMmsg"];
+            var n_bdprint = Request["n_bdprint"];
+            //var num_print = Request["num_print"];
+            var ylbd = Request["ylbd"];
+            var s_id = "liushui";
+            var s_waternum = s_id;
+
+
+            int num_print = int.Parse(Request["num_print"]);
+            string s_creator = Server.UrlDecode(Request.Cookies["bcp_userInfo"]["UserID"].ToString());
+            string nowtime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            string s_Groupid = DBHelper.getuserGroup(s_creator);
+            string s_Roleid = Server.HtmlDecode(Request.Cookies["bcp_userInfo"]["RoleID"].ToString());
+
+            //string a = Tools(i,o,d);
+            //Tools tools = new Tools();
+            sql = "INSERT INTO HNAH_BarCodePrintSys.dbo.tbYaJingYuanChanPinPrint ";
+            sql += "(s_id, s_cnbqywm, s_packageType, s_AMCwlNum, s_cpgg, s_bzAmount, s_PoOrder, s_jhDate, s_scDate, s_scNum, s_Dc, s_mhDc, EWMmsg, s_creator, s_updator, s_createtime, s_updatetime, s_Groupid, s_Roleid, s_waternum, n_state, n_bdprint, s_scMsg) ";
+            sql += "VALUES(" + "'" + s_id + "','" + s_cnbqywm + "','" + s_packageType + "','" + s_AMCwlNum + "','" + s_cpgg + "','" + s_bzAmount + "','" + s_PoOrder + "','" + s_jhDate + "','" + s_scDate + "','" + s_scNum + "','" + s_Dc + "','" + s_mhDc + "','" + EWMmsg + "','" + s_creator + "','" + null + "','" + nowtime + "','" + null + "','" + s_Groupid + "','" + s_Roleid + "','" + s_waternum + "','" + n_state + "','" + n_bdprint + "','" + s_scMsg + "');";
+            var warndata = sql.IndexOf("warning");
+            if (warndata != -1)
+            {
+                code = -1;
+                string data = code + "," + lsnum;
+                return data;
+            }
+            else
+            {
+                while (id <= num_print)
+                {
+                    //s_lsh = Getlsnum();
+                    //if (s_lsh.Length == 0)
+                    //{
+                    //    s_lsh = "1";
+                    //}
+                    sql = "INSERT INTO HNAH_BarCodePrintSys.dbo.tbYaJingYuanChanPinPrint ";
+                    sql += "(s_id, s_cnbqywm, s_packageType, s_AMCwlNum, s_cpgg, s_bzAmount, s_PoOrder, s_jhDate, s_scDate, s_scNum, s_Dc, s_mhDc, EWMmsg, s_creator, s_updator, s_createtime, s_updatetime, s_Groupid, s_Roleid, s_waternum, n_state, n_bdprint, s_scMsg) ";
+                    sql += "VALUES(" + "'" + s_id + "','" + s_cnbqywm + "','" + s_packageType + "','" + s_AMCwlNum + "','" + s_cpgg + "','" + s_bzAmount + "','" + s_PoOrder + "','" + s_jhDate + "','" + s_scDate + "','" + s_scNum + "','" + s_Dc + "','" + s_mhDc + "','" + EWMmsg + "','" + s_creator + "','" + null + "','" + nowtime + "','" + null + "','" + s_Groupid + "','" + s_Roleid + "','" + s_waternum + "','" + n_state + "','" + n_bdprint + "','" + s_scMsg + "');";
+
+                    //lsary = lsary + "," + Getlsnum();
+                    code = DBHelper.excuteNoQuery(sql);
+                    if (code == -1)
+                    {
+                        code = 0;
+                    }
+
+                    id += 1;
+                }
+
+                string data = code.ToString();
+
+                return data;
+            }
+        }
     }
 }
